@@ -1,0 +1,25 @@
+<view class="page">
+  <custom-nav-bar />
+  <view class="hero">
+    <view class="hero-title">下一餐吃什么？</view>
+    <view class="hero-sub">
+      {{todayCount ? '今天已记录 ' + todayCount + ' 餐，建议会结合今天的饮食' : '建议会结合你的偏好和家中食材'}}
+    </view>
+  </view>
+
+  <button
+    class="btn btn-primary btn-block"
+    bindtap="onRecommend"
+    loading="{{loading}}"
+    disabled="{{loading}}"
+  >{{loading ? '正在结合今天的饮食和家中食材…' : '今晚吃什么？'}}</button>
+
+  <view class="card result" wx:if="{{result}}">
+    <view class="result-title">{{result.title}}</view>
+    <view class="reason" wx:if="{{result.reason}}">原因：{{result.reason}}</view>
+    <view class="suggestions">
+      <view class="suggestion-chip" wx:for="{{result.suggestions}}" wx:key="*this">{{item}}</view>
+    </view>
+    <view class="summary" wx:if="{{result.summary}}">{{result.summary}}</view>
+  </view>
+</view>

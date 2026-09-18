@@ -1,0 +1,28 @@
+<view class="page tab-page">
+  <custom-nav-bar />
+  <!-- 添加食材 -->
+  <view class="card">
+    <view class="card-title">添加食材</view>
+    <view class="field">
+      <input class="input" placeholder="食材名称，如：鸡蛋" value="{{name}}" bindinput="onNameInput" />
+    </view>
+    <view class="field-row">
+      <view class="field field-half">
+        <input class="input" placeholder="数量（可选）" value="{{quantity}}" bindinput="onQuantityInput" />
+      </view>
+      <view class="field field-half">
+        <input class="input" placeholder="备注（可选）" value="{{note}}" bindinput="onNoteInput" />
+      </view>
+    </view>
+    <button class="btn btn-primary btn-block" bindtap="onAdd" loading="{{adding}}" disabled="{{adding}}">添加</button>
+  </view>
+
+  <!-- 食材列表 -->
+  <view class="card">
+    <view class="card-title">家里有什么</view>
+    <block wx:if="{{list.length}}">
+      <ingredient-item wx:for="{{list}}" wx:key="id" ingredient="{{item}}" bind:delete="onDelete" />
+    </block>
+    <view class="muted" wx:else>还没有添加食材</view>
+  </view>
+</view>

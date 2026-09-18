@@ -1,0 +1,16 @@
+.field {
+  margin-bottom: 20rpx;
+}
+
+.field-row {
+  display: flex;
+}
+
+.field-half {
+  flex: 1;
+  min-width: 0;
+}
+
+.field-half + .field-half {
+  margin-left: 20rpx;
+}

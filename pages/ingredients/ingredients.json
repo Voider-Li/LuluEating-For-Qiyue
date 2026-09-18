@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "ingredient-item": "/components/ingredient-item/ingredient-item",
+    "custom-nav-bar": "/components/custom-nav-bar/custom-nav-bar"
+  },
+  "navigationBarTitleText": "我的食材",
+  "navigationStyle": "custom"
+}

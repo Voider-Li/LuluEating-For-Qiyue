@@ -1,0 +1,10 @@
+.group-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #7A756A;
+  margin: 28rpx 4rpx 16rpx;
+}
+
+.group-label:first-child {
+  margin-top: 8rpx;
+}

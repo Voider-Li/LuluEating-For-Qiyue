@@ -1,0 +1,32 @@
+.ingredient-item {
+  display: flex;
+  align-items: center;
+  background: #FFFDF7;
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 10rpx rgba(96, 86, 62, 0.05);
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.meta {
+  font-size: 24rpx;
+  color: #9B968A;
+  margin-top: 4rpx;
+}
+
+.delete {
+  font-size: 24rpx;
+  color: #C25B3F;
+  padding: 8rpx 20rpx;
+  background: #F9E3DE;
+  border-radius: 999rpx;
+}

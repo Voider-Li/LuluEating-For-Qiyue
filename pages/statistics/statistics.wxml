@@ -1,0 +1,62 @@
+<view class="page">
+  <custom-nav-bar />
+  <view class="seg">
+    <view class="seg-item {{range === 'week' ? 'seg-active' : ''}}" data-range="week" bindtap="onRange">近 7 天</view>
+    <view class="seg-item {{range === 'month' ? 'seg-active' : ''}}" data-range="month" bindtap="onRange">近 30 天</view>
+  </view>
+
+  <view class="card hero-card" wx:if="{{stats}}">
+    <view class="hero-main">
+      <text class="hero-num">{{stats.records}}</text>
+      <text class="hero-unit">餐记录</text>
+    </view>
+    <view class="hero-sub">共摄入约 {{stats.calories}} 千卡 · 蛋白质 {{stats.protein}}g</view>
+    <view class="hero-divider"></view>
+    <view class="hero-metrics">
+      <view class="metric">
+        <text class="metric-num">{{stats.avgCalories}}</text>
+        <text class="metric-label">平均每餐 kcal</text>
+      </view>
+      <view class="metric">
+        <text class="metric-num">{{stats.avgProtein}}g</text>
+        <text class="metric-label">平均蛋白质</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{stats}}">
+    <view class="card-title">餐次分布</view>
+    <view class="bar-row" wx:for="{{stats.meals}}" wx:key="key">
+      <text class="bar-label">{{item.label}}</text>
+      <view class="bar-track">
+        <view class="bar-fill" style="width: {{item.width}}%;"></view>
+      </view>
+      <text class="bar-count">{{item.count}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{stats}}">
+    <view class="card-title">营养维度达标率</view>
+    <view class="bar-row" wx:for="{{stats.dims}}" wx:key="key">
+      <text class="bar-label">{{item.label}}</text>
+      <view class="bar-track">
+        <view class="bar-fill dim-fill" style="width: {{item.rate}}%;"></view>
+      </view>
+      <text class="bar-count">{{item.count}}/{{item.total}}</text>
+    </view>
+    <view class="hint-dark">「充足」项占该维度记录的比例</view>
+  </view>
+
+  <view class="card" wx:if="{{stats && stats.overalls.length}}">
+    <view class="card-title">综合评价分布</view>
+    <view class="overall-chips">
+      <view class="overall-chip" wx:for="{{stats.overalls}}" wx:key="key" style="color: {{item.color}}; background: {{item.bg}};">{{item.text}} {{item.count}}</view>
+    </view>
+  </view>
+
+  <view class="card empty" wx:if="{{!loading && empty}}">
+    <view class="empty-emoji">📊</view>
+    <view class="empty-text">这个时间段还没有记录</view>
+    <view class="empty-sub">先去记录几餐，再回来看看统计</view>
+  </view>
+</view>

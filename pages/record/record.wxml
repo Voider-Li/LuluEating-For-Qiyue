@@ -1,0 +1,95 @@
+<view class="page tab-page">
+  <custom-nav-bar />
+  <!-- 餐次选择 -->
+  <view class="card">
+    <view class="card-title">这一餐是？</view>
+    <view class="meal-row">
+      <view
+        wx:for="{{mealOptions}}"
+        wx:key="key"
+        class="meal-pill {{mealType === item.key ? 'meal-pill-active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onMealTap"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 图片选择 -->
+  <view class="card">
+    <view class="card-title">拍一张照片</view>
+    <view class="image-picker" bindtap="onChooseImage">
+      <image wx:if="{{imagePath}}" src="{{imagePath}}" mode="aspectFill" class="preview" />
+      <view wx:else class="picker-placeholder">
+        <view class="picker-emoji">📷</view>
+        <view class="picker-text">拍照 / 从相册选择</view>
+      </view>
+      <view class="scan-wrap" wx:if="{{analyzing && imagePath}}">
+        <view class="scan-shade"></view>
+        <view class="scan-line"></view>
+        <view class="scan-badge">AI 识别中…</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 识别按钮 -->
+  <button
+    class="btn btn-primary btn-block"
+    bindtap="onAnalyze"
+    loading="{{analyzing}}"
+    disabled="{{analyzing || !imagePath}}"
+  >{{analyzing ? stepText : 'AI 识别这顿饭'}}</button>
+
+  <!-- 识别进度：分步状态 + 进度条 -->
+  <view class="analyze-panel" wx:if="{{analyzing}}">
+    <view class="step-row" wx:for="{{steps}}" wx:key="*this">
+      <view class="step-dot {{step > index ? 'step-done' : (step === index ? 'step-active' : '')}}">{{step > index ? '✓' : ''}}</view>
+      <text class="step-name {{step === index ? 'step-name-active' : ''}}">{{item}}</text>
+      <text class="step-percent" wx:if="{{step === index}}">{{progress}}%</text>
+    </view>
+    <view class="bar">
+      <view class="bar-fill" style="width: {{progress}}%"></view>
+    </view>
+  </view>
+
+  <!-- 识别结果 -->
+  <block wx:if="{{result}}">
+    <view class="card result-card">
+      <view class="card-title">识别结果</view>
+
+      <view class="foods-editor">
+        <view class="food-chip" wx:for="{{foods}}" wx:key="_key">
+          <text class="chip-name">{{item.name}}</text>
+          <text class="chip-kcal" wx:if="{{item.calories}}">{{item.calories}}kcal · 蛋白{{item.protein}}g</text>
+          <text class="chip-remove" data-index="{{index}}" bindtap="onRemoveFood">×</text>
+        </view>
+        <view class="add-food-row">
+          <input
+            class="input add-food-input"
+            placeholder="添加食物"
+            value="{{newFoodName}}"
+            bindinput="onFoodInput"
+            confirm-type="done"
+            bindconfirm="onAddFood"
+          />
+          <view class="add-food-btn" bindtap="onAddFood">添加</view>
+        </view>
+      </view>
+
+      <balance-card
+        balance="{{balance}}"
+        overall="{{overall}}"
+        summary="{{summary}}"
+        suggestion="{{suggestion}}"
+        nutrition="{{nutrition}}"
+        analyze-time="{{analyzeTime}}"
+      />
+    </view>
+
+    <button
+      class="btn btn-primary btn-block"
+      bindtap="onSave"
+      loading="{{saving}}"
+      disabled="{{saving}}"
+    >保存这顿记录</button>
+  </block>
+</view>

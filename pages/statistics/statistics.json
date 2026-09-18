@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "custom-nav-bar": "/components/custom-nav-bar/custom-nav-bar"
+  },
+  "navigationBarTitleText": "营养统计",
+  "navigationStyle": "custom"
+}

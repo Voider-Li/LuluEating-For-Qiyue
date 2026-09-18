@@ -1,0 +1,226 @@
+.meal-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.meal-pill {
+  padding: 14rpx 36rpx;
+  border-radius: 999rpx;
+  background: #F4F1E9;
+  color: #7A756A;
+  font-size: 27rpx;
+  margin: 0 16rpx 16rpx 0;
+}
+
+.meal-pill-active {
+  background: #FFB627;
+  color: #5C4305;
+}
+
+.image-picker {
+  position: relative;
+  border-radius: 20rpx;
+  overflow: hidden;
+  background: #F4F1E9;
+  min-height: 360rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview {
+  width: 100%;
+  height: 440rpx;
+  display: block;
+}
+
+.picker-placeholder {
+  text-align: center;
+}
+
+.picker-emoji {
+  font-size: 80rpx;
+}
+
+.picker-text {
+  color: #9B968A;
+  margin-top: 12rpx;
+}
+
+.scan-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scan-shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(30, 24, 10, 0.3);
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  background: linear-gradient(90deg, rgba(255, 182, 39, 0), #FFB627 50%, rgba(255, 182, 39, 0));
+  box-shadow: 0 0 24rpx rgba(255, 182, 39, 0.9);
+  animation: scanMove 1.8s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+  0% {
+    top: 6%;
+  }
+  50% {
+    top: 94%;
+  }
+  100% {
+    top: 6%;
+  }
+}
+
+.scan-badge {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  background: rgba(255, 253, 247, 0.92);
+  color: #B57D0A;
+  font-size: 24rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+}
+
+.analyze-panel {
+  margin-top: 24rpx;
+  background: #FFFDF7;
+  border-radius: 20rpx;
+  padding: 26rpx 28rpx;
+  box-shadow: 0 4rpx 12rpx rgba(96, 86, 62, 0.05);
+}
+
+.step-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.step-dot {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #E2DCCB;
+  color: #B57D0A;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.step-active {
+  border-color: #FFB627;
+  background: #FFB627;
+  color: #5C4305;
+}
+
+.step-done {
+  border-color: #FFE9B8;
+  background: #FFE9B8;
+}
+
+.step-name {
+  margin-left: 14rpx;
+  font-size: 26rpx;
+  color: #9B968A;
+}
+
+.step-name-active {
+  color: #B57D0A;
+  font-weight: 600;
+}
+
+.step-percent {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: #FFB627;
+  font-weight: 600;
+}
+
+.bar {
+  height: 12rpx;
+  background: #F4F1E9;
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #FFD76A, #FFB627);
+  transition: width 0.35s ease;
+}
+
+.result-card {
+  margin-top: 32rpx;
+}
+
+.foods-editor {
+  margin-bottom: 8rpx;
+}
+
+.food-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #FFF1CC;
+  color: #B57D0A;
+  border-radius: 999rpx;
+  padding: 10rpx 22rpx;
+  margin: 0 12rpx 16rpx 0;
+  font-size: 26rpx;
+}
+
+.chip-name {
+  font-size: 26rpx;
+}
+
+.chip-kcal {
+  margin-left: 10rpx;
+  font-size: 22rpx;
+  opacity: 0.85;
+}
+
+.chip-remove {
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #C25B3F;
+}
+
+.add-food-row {
+  display: flex;
+  align-items: center;
+  margin-top: 8rpx;
+}
+
+.add-food-input {
+  flex: 1;
+}
+
+.add-food-btn {
+  margin-left: 16rpx;
+  background: #FFB627;
+  color: #5C4305;
+  font-size: 26rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 28rpx;
+  border-radius: 16rpx;
+}

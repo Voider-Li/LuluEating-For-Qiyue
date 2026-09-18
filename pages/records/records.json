@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "food-record-card": "/components/food-record-card/food-record-card",
+    "custom-nav-bar": "/components/custom-nav-bar/custom-nav-bar"
+  },
+  "navigationBarTitleText": "饮食记录",
+  "navigationStyle": "custom"
+}

@@ -1,0 +1,61 @@
+<view class="page chat-page">
+  <custom-nav-bar />
+
+  <view class="chat-hint" wx:if="{{!messages.length && !typing}}">
+    <view class="chat-hint-avatar">嘎</view>
+    <view class="chat-hint-text">我是嘎哒，来聊聊天吧～</view>
+    <view class="chat-hint-sub">这里是只属于我们俩的聊天</view>
+  </view>
+
+  <scroll-view
+    class="chat-list"
+    scroll-y
+    scroll-with-animation
+    scroll-into-view="{{scrollIntoView}}"
+  >
+    <view class="chat-inner">
+      <view
+        wx:for="{{messages}}"
+        wx:key="id"
+        id="msg-{{item.id}}"
+        class="msg-row {{item.from === 'me' ? 'msg-row-me' : ''}}"
+      >
+        <view wx:if="{{item.from !== 'me'}}" class="avatar avatar-partner">嘎</view>
+        <view class="msg-main">
+          <view class="bubble {{item.from === 'me' ? 'bubble-me' : 'bubble-partner'}}">
+            {{item.text}}
+          </view>
+          <view class="msg-time">{{formatTime(item.time)}}</view>
+        </view>
+        <view wx:if="{{item.from === 'me'}}" class="avatar avatar-me">我</view>
+      </view>
+
+      <view class="msg-row" wx:if="{{typing}}">
+        <view class="avatar avatar-partner">嘎</view>
+        <view class="bubble bubble-partner typing">
+          <text class="dot"></text>
+          <text class="dot"></text>
+          <text class="dot"></text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="chat-input-bar">
+    <view class="chat-clear" bindtap="onClear">🗑</view>
+    <input
+      class="chat-input"
+      value="{{inputValue}}"
+      bindinput="onInput"
+      bindconfirm="onSend"
+      confirm-type="send"
+      placeholder="想和嘎哒说什么…"
+      cursor-spacing="20"
+    />
+    <button
+      class="chat-send"
+      bindtap="onSend"
+      disabled="{{!inputValue || typing}}"
+    >发送</button>
+  </view>
+</view>

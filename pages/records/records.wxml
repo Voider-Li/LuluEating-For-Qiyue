@@ -1,0 +1,15 @@
+<view class="page">
+  <custom-nav-bar />
+  <block wx:if="{{groups.length}}">
+    <block wx:for="{{groups}}" wx:key="label" wx:for-item="group">
+      <view class="group-label">{{group.label}}</view>
+      <food-record-card wx:for="{{group.items}}" wx:key="id" record="{{item}}" />
+    </block>
+  </block>
+
+  <view class="card empty" wx:if="{{!loading && !groups.length}}">
+    <view class="empty-emoji">📒</view>
+    <view class="empty-text">还没有饮食记录</view>
+    <view class="empty-sub">从首页拍张照片开始吧</view>
+  </view>
+</view>

@@ -1,0 +1,64 @@
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 12rpx 32rpx;
+  border-radius: 999rpx;
+  background: #F4F1E9;
+  color: #7A756A;
+  font-size: 26rpx;
+  margin: 0 16rpx 16rpx 0;
+}
+
+.pill-active {
+  background: #FFB627;
+  color: #5C4305;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  background: #FFF1CC;
+  border-radius: 999rpx;
+  padding: 8rpx 20rpx;
+  margin: 0 12rpx 12rpx 0;
+  font-size: 25rpx;
+  color: #B57D0A;
+}
+
+.tag-dislike {
+  background: #F9E3DE;
+  color: #A74F38;
+}
+
+.tag-remove {
+  margin-left: 10rpx;
+  color: #C25B3F;
+}
+
+.tag-input-row {
+  display: flex;
+  margin-top: 8rpx;
+}
+
+.tag-input {
+  flex: 1;
+}
+
+.tag-add {
+  margin-left: 16rpx;
+  background: #FFB627;
+  color: #5C4305;
+  font-size: 26rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 28rpx;
+  border-radius: 16rpx;
+}

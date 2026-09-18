@@ -1,0 +1,9 @@
+{
+  "desc": "膳食助手 sitemap",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "*"
+    }
+  ]
+}

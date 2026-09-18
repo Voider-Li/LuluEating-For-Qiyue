@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "balance-card": "/components/balance-card/balance-card",
+    "custom-nav-bar": "/components/custom-nav-bar/custom-nav-bar"
+  },
+  "navigationBarTitleText": "记录饮食",
+  "navigationStyle": "custom"
+}

@@ -1,0 +1,63 @@
+<view class="page">
+  <custom-nav-bar />
+  <!-- 口味 -->
+  <view class="card">
+    <view class="card-title">口味</view>
+    <view class="pill-row">
+      <view
+        wx:for="{{tasteOptions}}"
+        wx:key="*this"
+        class="pill {{taste === item ? 'pill-active' : ''}}"
+        data-value="{{item}}"
+        bindtap="onTasteTap"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 菜系 -->
+  <view class="card">
+    <view class="card-title">喜欢的菜系（可多选）</view>
+    <view class="pill-row">
+      <view
+        wx:for="{{cuisineOptions}}"
+        wx:key="*this"
+        class="pill {{cuisines.indexOf(item) >= 0 ? 'pill-active' : ''}}"
+        data-value="{{item}}"
+        bindtap="onCuisineTap"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 喜欢 -->
+  <view class="card">
+    <view class="card-title">喜欢的食物</view>
+    <view class="tag-row">
+      <view class="tag" wx:for="{{liked}}" wx:key="*this">
+        <text>{{item}}</text>
+        <text class="tag-remove" data-field="liked" data-value="{{item}}" bindtap="onRemoveTag">×</text>
+      </view>
+    </view>
+    <view class="tag-input-row">
+      <input class="input tag-input" placeholder="输入后点添加" value="{{likedInput}}" bindinput="onLikedInput" confirm-type="done" bindconfirm="onAddLiked" />
+      <view class="tag-add" bindtap="onAddLiked">添加</view>
+    </view>
+  </view>
+
+  <!-- 不喜欢 -->
+  <view class="card">
+    <view class="card-title">不喜欢的食物</view>
+    <view class="tag-row">
+      <view class="tag tag-dislike" wx:for="{{disliked}}" wx:key="*this">
+        <text>{{item}}</text>
+        <text class="tag-remove" data-field="disliked" data-value="{{item}}" bindtap="onRemoveTag">×</text>
+      </view>
+    </view>
+    <view class="tag-input-row">
+      <input class="input tag-input" placeholder="输入后点添加" value="{{dislikedInput}}" bindinput="onDislikedInput" confirm-type="done" bindconfirm="onAddDisliked" />
+      <view class="tag-add" bindtap="onAddDisliked">添加</view>
+    </view>
+  </view>
+
+  <button class="btn btn-primary btn-block" bindtap="onSave" loading="{{saving}}" disabled="{{saving}}">保存偏好</button>
+  <view class="muted hint">这些偏好会用于下一餐推荐</view>
+</view>

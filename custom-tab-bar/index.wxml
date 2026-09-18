@@ -1,0 +1,21 @@
+<view class="tab-bar">
+  <view class="tab-group">
+    <view
+      wx:for="{{list}}"
+      wx:key="pagePath"
+      class="tab-item {{selected === index ? 'tab-item-active' : ''}}"
+      data-path="{{item.pagePath}}"
+      data-index="{{index}}"
+      bindtap="onTap"
+    >
+      <image class="tab-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" />
+      <text class="tab-text">{{item.text}}</text>
+    </view>
+  </view>
+  <view class="tab-side">
+    <view class="chat-btn" hover-class="chat-btn-hover" bindtap="goChat">
+      <image class="chat-icon" src="/assets/tabbar/chat.png" />
+      <text class="chat-label">嘎哒</text>
+    </view>
+  </view>
+</view>

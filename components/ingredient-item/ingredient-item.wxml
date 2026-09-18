@@ -1,0 +1,7 @@
+<view class="ingredient-item">
+  <view class="info">
+    <view class="name">{{ingredient.name}}</view>
+    <view class="meta" wx:if="{{ingredient.quantity || ingredient.note}}">{{ingredient.quantity || ingredient.note}}</view>
+  </view>
+  <view class="delete" catchtap="onDelete">删除</view>
+</view>

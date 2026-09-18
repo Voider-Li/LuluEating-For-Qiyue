@@ -1,0 +1,62 @@
+<view class="page tab-page">
+  <custom-nav-bar />
+  <!-- 未登录：登录卡片 -->
+  <view class="card" wx:if="{{needLogin}}">
+    <view class="card-title">登录膳食助手</view>
+    <input class="input" placeholder="邮箱" value="{{email}}" bindinput="onInputEmail" />
+    <input class="input login-password" password placeholder="密码" value="{{password}}" bindinput="onInputPassword" />
+    <button class="btn btn-primary btn-block" bindtap="onLogin" loading="{{loggingIn}}" disabled="{{loggingIn}}">登录</button>
+    <view class="muted hint">V1 演示：mock 模式下自动登录</view>
+  </view>
+
+  <block wx:else>
+    <view class="hero">
+      <view class="hero-left">
+        <view class="hero-tag">✨ 祈栎专属</view>
+        <view class="hero-titles">
+          <view class="hero-title">{{greeting}}</view>
+          <view class="hero-sub">今天吃了什么好吃的呀？</view>
+        </view>
+        <view class="hero-spacer"></view>
+        <view class="hero-btn" hover-class="hero-btn-hover" bindtap="goRecord">📷 拍照识别</view>
+      </view>
+      <image class="hero-ttl" src="/assets/images/ttl.png" mode="widthFix" />
+    </view>
+
+    <!-- 两个主操作 -->
+    <view class="card action-card action-card-warm" bindtap="goRecommendation">
+      <view class="action-emoji">🍚</view>
+      <view class="action-body">
+        <view class="action-title">下一餐推荐</view>
+        <view class="action-sub">结合今天的饮食、偏好和家中食材</view>
+      </view>
+      <view class="action-arrow">›</view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="quick-row">
+      <view class="quick-item" bindtap="goIngredients">🥕 我的食材</view>
+      <view class="quick-item" bindtap="goPreferences">⚙️ 饮食偏好</view>
+      <view class="quick-item" bindtap="goRecords">📒 全部记录</view>
+      <view class="quick-item" bindtap="goStatistics">📊 营养统计</view>
+    </view>
+
+    <!-- 今日饮食 -->
+    <view class="section">
+      <view class="section-title">
+        <text>今日饮食</text>
+        <text class="section-sub" wx:if="{{hasRecords}}">今日已记录 {{todayCount}} 餐</text>
+      </view>
+
+      <view class="card empty" wx:if="{{!loading && !hasRecords}}">
+        <view class="empty-emoji">🍽️</view>
+        <view class="empty-text">今天还没有记录饮食</view>
+        <view class="empty-sub">拍张照片开始吧</view>
+      </view>
+
+      <block wx:if="{{hasRecords}}">
+        <food-record-card wx:for="{{todayRecords}}" wx:key="id" record="{{item}}" />
+      </block>
+    </view>
+  </block>
+</view>

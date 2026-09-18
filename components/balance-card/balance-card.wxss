@@ -1,0 +1,129 @@
+.balance-card {
+  width: 100%;
+}
+
+.overall-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.overall {
+  display: flex;
+  align-items: center;
+}
+
+.overall-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  margin-right: 12rpx;
+}
+
+.overall-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.score {
+  display: flex;
+  align-items: baseline;
+  background: #FFF1CC;
+  border-radius: 999rpx;
+  padding: 4rpx 20rpx;
+}
+
+.score-num {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #B57D0A;
+}
+
+.score-label {
+  font-size: 20rpx;
+  color: #B57D0A;
+  margin-left: 6rpx;
+}
+
+.macros {
+  display: flex;
+  background: #FBF8F0;
+  border-radius: 16rpx;
+  padding: 18rpx 0;
+  margin-bottom: 22rpx;
+}
+
+.macro {
+  flex: 1;
+  text-align: center;
+}
+
+.macro-num {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #3F3D38;
+}
+
+.macro-label {
+  display: block;
+  font-size: 22rpx;
+  color: #9B968A;
+  margin-top: 4rpx;
+}
+
+.dim-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.dim-label {
+  width: 110rpx;
+  font-size: 24rpx;
+  color: #7A756A;
+}
+
+.dim-bar {
+  flex: 1;
+  height: 14rpx;
+  background: #F4F1E9;
+  border-radius: 999rpx;
+  overflow: hidden;
+  margin: 0 16rpx;
+}
+
+.dim-fill {
+  height: 100%;
+  border-radius: 999rpx;
+}
+
+.dim-pill {
+  font-size: 22rpx;
+  padding: 2rpx 14rpx;
+  border-radius: 999rpx;
+  text-align: center;
+}
+
+.summary {
+  margin-top: 20rpx;
+  font-size: 27rpx;
+  color: #5A564D;
+}
+
+.suggestion {
+  margin-top: 14rpx;
+  font-size: 27rpx;
+  color: #B57D0A;
+  background: #FFF6DE;
+  padding: 16rpx 20rpx;
+  border-radius: 16rpx;
+}
+
+.ai-footer {
+  margin-top: 20rpx;
+  font-size: 22rpx;
+  color: #B9B2A2;
+  text-align: right;
+}

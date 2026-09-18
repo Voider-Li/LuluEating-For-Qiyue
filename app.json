@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/record/record",
+    "pages/records/records",
+    "pages/statistics/statistics",
+    "pages/ingredients/ingredients",
+    "pages/preferences/preferences",
+    "pages/recommendation/recommendation",
+    "pages/chat/chat"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FFF6DE",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "膳食助手",
+    "navigationStyle": "custom",
+    "backgroundColor": "#FFF6DE",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9B968A",
+    "selectedColor": "#FFB627",
+    "backgroundColor": "#FFFDF7",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/record/record",
+        "text": "记录",
+        "iconPath": "assets/tabbar/record.png",
+        "selectedIconPath": "assets/tabbar/record-active.png"
+      },
+      {
+        "pagePath": "pages/ingredients/ingredients",
+        "text": "食材",
+        "iconPath": "assets/tabbar/ingredients.png",
+        "selectedIconPath": "assets/tabbar/ingredients-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

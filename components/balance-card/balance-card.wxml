@@ -1,0 +1,46 @@
+<view class="balance-card">
+  <view class="overall-row">
+    <view class="overall">
+      <view class="overall-dot" style="background: {{overallMeta.color}};"></view>
+      <text class="overall-text" style="color: {{overallMeta.color}};">综合评价：{{overallMeta.text}}</text>
+    </view>
+    <view class="score">
+      <text class="score-num">{{score}}</text>
+      <text class="score-label">营养分</text>
+    </view>
+  </view>
+
+  <view class="macros">
+    <view class="macro">
+      <text class="macro-num">{{nutritionView.calories}}</text>
+      <text class="macro-label">kcal 热量</text>
+    </view>
+    <view class="macro">
+      <text class="macro-num">{{nutritionView.protein}}g</text>
+      <text class="macro-label">蛋白质</text>
+    </view>
+    <view class="macro">
+      <text class="macro-num">{{nutritionView.fat}}g</text>
+      <text class="macro-label">脂肪</text>
+    </view>
+  </view>
+
+  <view class="dimensions">
+    <view class="dim-row" wx:for="{{dimensions}}" wx:key="key">
+      <text class="dim-label">{{item.label}}</text>
+      <view class="dim-bar">
+        <view class="dim-fill" style="width: {{item.width}}%; background: {{item.meta.color}};"></view>
+      </view>
+      <text class="dim-pill" style="color: {{item.meta.color}}; background: {{item.meta.bg}};">{{item.meta.text}}</text>
+    </view>
+  </view>
+
+  <view class="summary" wx:if="{{summary}}">{{summary}}</view>
+  <view class="suggestion" wx:if="{{suggestion}}">💡 {{suggestion}}</view>
+
+  <view class="ai-footer">
+    🧠 由 AI 分析生成
+    <text wx:if="{{analyzeTime}}"> · 耗时 {{analyzeTime}}s</text>
+    <text> · 热量蛋白为估算值</text>
+  </view>
+</view>

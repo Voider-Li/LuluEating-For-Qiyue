@@ -1,0 +1,140 @@
+page {
+  background: #FFF6DE;
+  color: #3F3D38;
+  font-size: 28rpx;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+.page {
+  padding: 32rpx 32rpx 64rpx;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #FFFDF7;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(96, 86, 62, 0.06);
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 24rpx;
+  color: #3F3D38;
+}
+
+.section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin: 36rpx 4rpx 20rpx;
+}
+
+.section-sub {
+  font-size: 24rpx;
+  color: #9B968A;
+  font-weight: 400;
+}
+
+.btn {
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  padding: 0 32rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border: none;
+  margin: 0;
+}
+
+.btn::after {
+  border: none;
+}
+
+.btn-primary {
+  background: #FFB627;
+  color: #5C4305;
+}
+
+.btn-primary[disabled] {
+  background: #F0DEAE;
+  color: #C2A562;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+  margin-top: 24rpx;
+}
+
+.btn-ghost {
+  background: #FFF1CC;
+  color: #B57D0A;
+}
+
+.input {
+  background: #F4F1E9;
+  border-radius: 16rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.muted {
+  color: #9B968A;
+  font-size: 24rpx;
+}
+
+.empty {
+  text-align: center;
+  padding: 64rpx 32rpx;
+}
+
+.empty-emoji {
+  font-size: 72rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.empty-sub {
+  color: #9B968A;
+  margin-top: 8rpx;
+}
+
+.hint {
+  margin-top: 20rpx;
+  text-align: center;
+}
+
+/* 自定义 tabBar 悬浮栏：给页面底部预留空间 */
+.tab-page {
+  padding-bottom: 240rpx;
+  position: relative;
+}
+
+/* 底部环境光：让悬浮毛玻璃有内容可糊，增强真实感 */
+.tab-page::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 360rpx;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 246, 222, 0) 0%, rgba(255, 182, 39, 0.16) 70%, rgba(255, 182, 39, 0.26) 100%);
+}
