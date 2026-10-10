@@ -1,12 +1,14 @@
 const CONFIG = require('../config');
 const supabase = require('./supabase');
+const cloud = require('./cloud');
 const authService = require('./auth');
 
 const DEFAULT_PREFS = {
   taste: '清淡',
   cuisines: ['中餐'],
   liked: ['鸡蛋', '鸡胸肉'],
-  disliked: ['香菜', '苦瓜']
+  disliked: ['香菜', '苦瓜'],
+  allergens: []
 };
 
 function loadLocal() {
@@ -20,6 +22,30 @@ function get() {
   if (CONFIG.USE_MOCK_DATA) {
     return Promise.resolve(loadLocal());
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return authService.getCurrentUser().then(function (user) {
+      return cloud.collection('dietary_preferences')
+        .where({ _openid: user.openid })
+        .limit(1)
+        .get()
+        .then(function (res) {
+          const row = res.data && res.data[0];
+          return {
+            taste: (row && row.taste) || DEFAULT_PREFS.taste,
+            cuisines: (row && row.cuisines) || [],
+            liked: (row && row.liked) || [],
+            disliked: (row && row.disliked) || [],
+            allergens: (row && row.allergens) || []
+          };
+        })
+        .catch(function () {
+          // 集合还没建 / 没权限时，先给默认值，不把页面卡死
+          return Object.assign({}, DEFAULT_PREFS);
+        });
+    });
+  }
+
   return authService.getCurrentUser().then(function (user) {
     return supabase
       .selectFrom('dietary_preferences', {
@@ -43,6 +69,32 @@ function save(prefs) {
     wx.setStorageSync('mock_preferences', prefs);
     return Promise.resolve(prefs);
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return authService.getCurrentUser().then(function (user) {
+      const data = {
+        taste: prefs.taste,
+        cuisines: prefs.cuisines || [],
+        liked: prefs.liked || [],
+        disliked: prefs.disliked || [],
+        allergens: prefs.allergens || [],
+        updated_at: Date.now()
+      };
+      return cloud.collection('dietary_preferences')
+        .where({ _openid: user.openid })
+        .limit(1)
+        .get()
+        .then(function (res) {
+          const row = res.data && res.data[0];
+          if (row) {
+            return cloud.collection('dietary_preferences').doc(row._id).update({ data: data });
+          }
+          return cloud.collection('dietary_preferences').add({ data: data });
+        })
+        .then(function () { return prefs; });
+    });
+  }
+
   return authService.getCurrentUser().then(function (user) {
     const data = {
       user_id: user.id,

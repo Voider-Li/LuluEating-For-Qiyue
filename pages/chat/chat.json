@@ -2,6 +2,6 @@
   "usingComponents": {
     "custom-nav-bar": "/components/custom-nav-bar/custom-nav-bar"
   },
-  "navigationBarTitleText": "嘎哒",
+  "navigationBarTitleText": "我们的餐桌",
   "navigationStyle": "custom"
 }

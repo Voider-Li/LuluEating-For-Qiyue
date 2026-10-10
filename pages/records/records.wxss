@@ -1,3 +1,29 @@
+.scope-bar {
+  display: flex;
+  gap: 12rpx;
+  margin: 8rpx 4rpx 4rpx;
+  padding: 6rpx;
+  border-radius: 999rpx;
+  background: #FFF3D6;
+}
+
+.scope-item {
+  flex: 1;
+  height: 64rpx;
+  line-height: 64rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #8B6A35;
+  border-radius: 999rpx;
+}
+
+.scope-active {
+  background: #FFFDF7;
+  color: #5C4305;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(116, 91, 42, .10);
+}
+
 .group-label {
   font-size: 28rpx;
   font-weight: 600;

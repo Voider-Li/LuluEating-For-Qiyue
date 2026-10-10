@@ -8,8 +8,21 @@
   box-shadow: 0 2rpx 10rpx rgba(96, 86, 62, 0.05);
 }
 
+.ingredient-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  margin-right: 18rpx;
+  border-radius: 20rpx;
+  background: #F0F6EA;
+  font-size: 34rpx;
+}
+
 .info {
   flex: 1;
+  min-width: 0;
 }
 
 .name {
@@ -24,9 +37,11 @@
 }
 
 .delete {
-  font-size: 24rpx;
-  color: #C25B3F;
-  padding: 8rpx 20rpx;
-  background: #F9E3DE;
+  margin-left: 14rpx;
+  padding: 9rpx 18rpx;
+  border: 1rpx solid #F1D8D1;
   border-radius: 999rpx;
+  color: #B86B58;
+  background: #FFF5F1;
+  font-size: 22rpx;
 }

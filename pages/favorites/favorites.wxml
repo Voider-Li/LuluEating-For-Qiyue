@@ -1,0 +1,40 @@
+<view class="page favorites-page">
+  <custom-nav-bar />
+
+  <view class="favorites-hero">
+    <view>
+      <view class="eyebrow">LITTLE FOOD MUSEUM</view>
+      <view class="page-title">我的收藏</view>
+      <view class="page-subtitle">把下次还想吃的味道，先放在这里。</view>
+    </view>
+    <view class="hero-emoji">🍯</view>
+  </view>
+
+  <view class="collection-meta">
+    <text><text class="meta-number">{{total}}</text> 道小灵感</text>
+    <view class="add-favorite" catchtap="onAddFavorite">＋ 收藏一道菜</view>
+  </view>
+
+  <view class="favorite-grid" wx:if="{{favorites.length}}">
+    <view
+      class="favorite-card"
+      wx:for="{{favorites}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-name="{{item.name}}"
+      bindlongpress="onLongPress"
+    >
+      <image wx:if="{{item.image_path}}" class="favorite-art-img" src="{{item.image_path}}" mode="aspectFill" />
+      <view wx:else class="favorite-art">🍽️</view>
+      <view class="favorite-name">{{item.name}}</view>
+      <view class="favorite-note" wx:if="{{item.note}}">{{item.note}}</view>
+      <view class="favorite-hint">长按可移除</view>
+    </view>
+  </view>
+
+  <view class="empty card" wx:else>
+    <view class="empty-emoji">🥣</view>
+    <view class="empty-text">还没有收藏</view>
+    <view class="empty-sub">把想下次再吃的东西放进来吧。</view>
+  </view>
+</view>

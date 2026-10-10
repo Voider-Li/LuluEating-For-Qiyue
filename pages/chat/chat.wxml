@@ -1,61 +1,113 @@
-<view class="page chat-page">
+<view class="page table-page">
   <custom-nav-bar />
 
-  <view class="chat-hint" wx:if="{{!messages.length && !typing}}">
-    <view class="chat-hint-avatar">嘎</view>
-    <view class="chat-hint-text">我是嘎哒，来聊聊天吧～</view>
-    <view class="chat-hint-sub">这里是只属于我们俩的聊天</view>
+  <view class="t-head">
+    <view class="t-title-row">
+      <view class="t-orn"></view>
+      <view class="t-title-wrap">
+        <text class="t-title">我们的餐桌</text>
+        <view class="t-dot" wx:if="{{unread}}"></view>
+      </view>
+      <view class="t-orn t-orn-r"></view>
+    </view>
   </view>
 
-  <scroll-view
-    class="chat-list"
-    scroll-y
-    scroll-with-animation
-    scroll-into-view="{{scrollIntoView}}"
-  >
-    <view class="chat-inner">
-      <view
-        wx:for="{{messages}}"
-        wx:key="id"
-        id="msg-{{item.id}}"
-        class="msg-row {{item.from === 'me' ? 'msg-row-me' : ''}}"
-      >
-        <view wx:if="{{item.from !== 'me'}}" class="avatar avatar-partner">嘎</view>
-        <view class="msg-main">
-          <view class="bubble {{item.from === 'me' ? 'bubble-me' : 'bubble-partner'}}">
-            {{item.text}}
-          </view>
-          <view class="msg-time">{{formatTime(item.time)}}</view>
-        </view>
-        <view wx:if="{{item.from === 'me'}}" class="avatar avatar-me">我</view>
-      </view>
+  <view class="stage">
+    <image class="stage-table" src="/assets/images/table.png" mode="widthFix" />
 
-      <view class="msg-row" wx:if="{{typing}}">
-        <view class="avatar avatar-partner">嘎</view>
-        <view class="bubble bubble-partner typing">
-          <text class="dot"></text>
-          <text class="dot"></text>
-          <text class="dot"></text>
-        </view>
+    <view class="seat" style="left:{{seats.qiyue.left}}%;top:{{seats.qiyue.top}}%" data-side="qiyue" bindtap="onSeatTap">
+      <image wx:if="{{seats.qiyue.avatar}}" class="seat-face" src="{{seats.qiyue.avatar}}" mode="aspectFill" />
+      <view wx:else class="seat-face seat-face-text" style="background:{{seats.qiyue.color}};color:{{seats.qiyue.textColor}}">{{seats.qiyue.initial}}</view>
+      <view class="seat-name">{{seats.qiyue.name}}</view>
+    </view>
+
+    <view class="seat" style="left:{{seats.qinghui.left}}%;top:{{seats.qinghui.top}}%" data-side="qinghui" bindtap="onSeatTap">
+      <image wx:if="{{seats.qinghui.avatar}}" class="seat-face" src="{{seats.qinghui.avatar}}" mode="aspectFill" />
+      <view wx:else class="seat-face seat-face-text" style="background:{{seats.qinghui.color}};color:{{seats.qinghui.textColor}}">{{seats.qinghui.initial}}</view>
+      <view class="seat-name">{{seats.qinghui.name}}</view>
+    </view>
+
+    <view wx:for="{{plates}}" wx:key="key"
+          class="plate {{item.image ? 'plate-has-photo' : 'plate-empty'}}"
+          style="left:{{item.left}}%;top:{{item.top}}%"
+          data-key="{{item.key}}" bindtap="onPlateTap">
+      <image wx:if="{{item.image}}" class="plate-photo" src="{{item.image}}" mode="aspectFill" />
+      <block wx:else>
+        <text class="plate-meal {{item.empty ? '' : 'plate-meal-sm'}}">{{item.label}}</text>
+        <text wx:if="{{!item.empty}}" class="plate-foods">{{item.foodsText || '已记录'}}</text>
+      </block>
+    </view>
+
+    <view wx:for="{{mates}}" wx:key="id"
+          class="mate {{item.speaking ? 'mate-up' : ''}}"
+          style="left:{{item.left}}%;top:{{item.top}}%"
+          data-id="{{item.id}}" bindtap="onAgentTap">
+      <image wx:if="{{item.avatar}}" class="mate-face" src="{{item.avatar}}" mode="aspectFill" />
+      <view wx:else class="mate-face mate-face-text" style="background:{{item.color}};color:{{item.textColor}}">{{item.emoji}}</view>
+      <view class="mate-name">{{item.name}}</view>
+    </view>
+  </view>
+
+  <view class="bubble {{bubble.thinking ? 'bubble-thinking' : ''}}" wx:if="{{bubble}}" bindtap="onBubbleTap">
+    <image wx:if="{{bubble.avatar}}" class="bubble-face" src="{{bubble.avatar}}" mode="aspectFill" />
+    <view wx:else class="bubble-face bubble-face-text" style="background:{{bubble.color}}">✦</view>
+    <view class="bubble-body">
+      <view class="bubble-name">{{bubble.name}}</view>
+      <view class="bubble-text">{{bubble.text}}</view>
+      <view class="bubble-dots" wx:if="{{bubble.thinking}}"><view class="dot"></view><view class="dot"></view><view class="dot"></view></view>
+    </view>
+  </view>
+
+  <view class="surprise" wx:if="{{surprises.length}}">
+    <view class="surprise-item" wx:for="{{surprises}}" wx:key="id">
+      <view class="surprise-tag">后厨</view>
+      <view class="surprise-text">{{item.content}}</view>
+      <view class="surprise-done" data-id="{{item.id}}" catchtap="onSurpriseDone">收到</view>
+    </view>
+  </view>
+
+  <view class="record-btn" bindtap="onRecord" bindlongpress="onBackstage">＋ 记一餐</view>
+
+  <view class="bs-mask" wx:if="{{backstageOpen}}" catchtap="closeBackstage"></view>
+  <view class="bs-sheet {{backstageOpen ? 'bs-sheet-show' : ''}}">
+    <view class="bs-head">
+      <view>
+        <view class="bs-eyebrow">清辉专属</view>
+        <view class="bs-title">后厨</view>
+      </view>
+      <view class="bs-close" catchtap="closeBackstage">×</view>
+    </view>
+
+    <textarea class="bs-input" placeholder="写一句想说的话，或者想端上桌的一道菜…" value="{{bsContent}}" bindinput="onBsInput" maxlength="120" />
+
+    <view class="bs-row">
+      <text class="bs-label">给谁</text>
+      <view class="bs-chips">
+        <view class="bs-chip {{bsFor === 'qiyue' ? 'bs-chip-on' : ''}}" data-v="qiyue" catchtap="onBsFor">祈栎</view>
+        <view class="bs-chip {{bsFor === 'qinghui' ? 'bs-chip-on' : ''}}" data-v="qinghui" catchtap="onBsFor">清辉</view>
       </view>
     </view>
-  </scroll-view>
 
-  <view class="chat-input-bar">
-    <view class="chat-clear" bindtap="onClear">🗑</view>
-    <input
-      class="chat-input"
-      value="{{inputValue}}"
-      bindinput="onInput"
-      bindconfirm="onSend"
-      confirm-type="send"
-      placeholder="想和嘎哒说什么…"
-      cursor-spacing="20"
-    />
-    <button
-      class="chat-send"
-      bindtap="onSend"
-      disabled="{{!inputValue || typing}}"
-    >发送</button>
+    <view class="bs-row">
+      <text class="bs-label">什么时候出现</text>
+      <view class="bs-chips">
+        <view class="bs-chip {{bsWhen === 'now' ? 'bs-chip-on' : ''}}" data-v="now" catchtap="onBsWhen">现在</view>
+        <view class="bs-chip {{bsWhen === 'tonight' ? 'bs-chip-on' : ''}}" data-v="tonight" catchtap="onBsWhen">今晚 8 点</view>
+        <view class="bs-chip {{bsWhen === 'tomorrow' ? 'bs-chip-on' : ''}}" data-v="tomorrow" catchtap="onBsWhen">明早 8 点</view>
+      </view>
+    </view>
+
+    <view class="bs-save" catchtap="onBsSave">放进后厨</view>
+
+    <view class="bs-list" wx:if="{{bsList.length}}">
+      <view class="bs-list-title">已经放进去的</view>
+      <view class="bs-list-item" wx:for="{{bsList}}" wx:key="id">
+        <view class="bs-list-main">
+          <view class="bs-list-text">{{item.content}}</view>
+          <view class="bs-list-meta">{{item.forText}} · {{item.whenText}}</view>
+        </view>
+        <view class="bs-list-del" data-id="{{item.id}}" catchtap="onBsRemove">删除</view>
+      </view>
+    </view>
   </view>
 </view>

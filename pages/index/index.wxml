@@ -1,62 +1,111 @@
-<view class="page tab-page">
+<view class="page tab-page home-page" bindtap="closeLuluMenu">
   <custom-nav-bar />
-  <!-- 未登录：登录卡片 -->
-  <view class="card" wx:if="{{needLogin}}">
-    <view class="card-title">登录膳食助手</view>
+
+  <view class="home-intro" wx:if="{{!needLogin && !needClaim && !blocked}}">
+    <view>
+      <view class="eyebrow">祈栎的今日餐桌 <text>· 2026.09.28</text></view>
+      <view class="home-title">{{greeting}}</view>
+      <view class="home-subtitle">再忙也要好好吃饭哦！</view>
+    </view>
+    <view class="identity-pill" catchtap="onSwitchAccount"><view class="identity-dot"></view>{{user.nickname || "祈栎"}}<text class="identity-arrow">⌄</text></view>
+  </view>
+
+  <view class="card login-card" wx:if="{{needLogin}}">
+    <view class="login-mark">L</view>
+    <view class="card-title">登录你的专属餐桌</view>
     <input class="input" placeholder="邮箱" value="{{email}}" bindinput="onInputEmail" />
     <input class="input login-password" password placeholder="密码" value="{{password}}" bindinput="onInputPassword" />
     <button class="btn btn-primary btn-block" bindtap="onLogin" loading="{{loggingIn}}" disabled="{{loggingIn}}">登录</button>
-    <view class="muted hint">V1 演示：mock 模式下自动登录</view>
+    <view class="muted hint">V1 演示：Mock 模式下自动登录</view>
   </view>
 
-  <block wx:else>
-    <view class="hero">
-      <view class="hero-left">
-        <view class="hero-tag">✨ 祈栎专属</view>
-        <view class="hero-titles">
-          <view class="hero-title">{{greeting}}</view>
-          <view class="hero-sub">今天吃了什么好吃的呀？</view>
+  <view class="card login-card blocked-card" wx:elif="{{blocked}}">
+    <view class="login-mark">满</view>
+    <view class="card-title">这张餐桌已经坐满了</view>
+    <view class="muted hint">{{blockMessage}}</view>
+  </view>
+
+  <block wx:elif="{{!needClaim}}">
+    <view class="hero-card">
+      <view class="hero-copy">
+        <view class="hero-kicker">TODAY'S TABLE</view>
+        <view class="hero-title">今天吃了什么？</view>
+        <view class="hero-sub">拍一张照片，让噜噜和小伙伴们也来看看。</view>
+        <view class="hero-actions">
+          <view class="hero-btn" hover-class="hero-btn-hover" bindtap="goRecord">📷 记录这一餐</view>
+          <view class="hero-text-btn" bindtap="goRecords">查看全部 <text>›</text></view>
         </view>
-        <view class="hero-spacer"></view>
-        <view class="hero-btn" hover-class="hero-btn-hover" bindtap="goRecord">📷 拍照识别</view>
       </view>
       <image class="hero-ttl" src="/assets/images/ttl.png" mode="widthFix" />
     </view>
 
-    <!-- 两个主操作 -->
-    <view class="card action-card action-card-warm" bindtap="goRecommendation">
-      <view class="action-emoji">🍚</view>
-      <view class="action-body">
-        <view class="action-title">下一餐推荐</view>
-        <view class="action-sub">结合今天的饮食、偏好和家中食材</view>
+    <view class="status-card">
+      <view class="status-heading">
+        <view><view class="section-label">TODAY</view><view class="status-title">今日饮食</view></view>
+        <view class="status-count"><text>{{todayCount}}</text> 餐已记录</view>
       </view>
-      <view class="action-arrow">›</view>
+      <view class="meal-progress">
+        <view class="meal-progress-item" wx:for="{{todayStatus}}" wx:key="key">
+          <view class="meal-dot {{item.done ? 'meal-dot-done' : ''}}">{{item.done ? '✓' : ''}}</view>
+          <view class="meal-label">{{item.label}}</view>
+        </view>
+      </view>
+      <view class="status-note"><view class="note-spark">✦</view>{{nutritionHint}}</view>
     </view>
 
-    <!-- 快捷入口 -->
-    <view class="quick-row">
-      <view class="quick-item" bindtap="goIngredients">🥕 我的食材</view>
-      <view class="quick-item" bindtap="goPreferences">⚙️ 饮食偏好</view>
-      <view class="quick-item" bindtap="goRecords">📒 全部记录</view>
-      <view class="quick-item" bindtap="goStatistics">📊 营养统计</view>
+    <view class="section section-tight">
+      <view class="section-title"><text>接下来吃什么</text><text class="section-link" bindtap="goRecommendation">换一个 ›</text></view>
+      <view class="recommend-card" bindtap="goRecommendation">
+        <view class="recommend-icon">🍅</view>
+        <view class="recommend-body"><view class="recommend-title">番茄炒蛋 · 清炒青菜</view><view class="recommend-sub">家里现有食材可以直接做 · 清淡一点刚刚好</view></view>
+        <view class="recommend-arrow">→</view>
+      </view>
     </view>
 
-    <!-- 今日饮食 -->
-    <view class="section">
-      <view class="section-title">
-        <text>今日饮食</text>
-        <text class="section-sub" wx:if="{{hasRecords}}">今日已记录 {{todayCount}} 餐</text>
+    <view class="section section-tight">
+      <view class="section-title"><text>常用入口</text></view>
+      <view class="quick-grid">
+        <view class="quick-item quick-item-yellow" bindtap="goIngredients"><text class="quick-icon">🥕</text><text>我的食材</text><text class="quick-caption">看看还能做什么</text></view>
+        <view class="quick-item quick-item-green" bindtap="goRecords"><text class="quick-icon">📒</text><text>全部记录</text><text class="quick-caption">回看每一顿</text></view>
+        <view class="quick-item quick-item-pink" bindtap="goPreferences"><text class="quick-icon">🫶</text><text>饮食偏好</text><text class="quick-caption">告诉我你的口味</text></view>
+        <view class="quick-item quick-item-blue" bindtap="goStatistics"><text class="quick-icon">◔</text><text>营养统计</text><text class="quick-caption">慢慢了解自己</text></view>
       </view>
+    </view>
 
-      <view class="card empty" wx:if="{{!loading && !hasRecords}}">
-        <view class="empty-emoji">🍽️</view>
-        <view class="empty-text">今天还没有记录饮食</view>
-        <view class="empty-sub">拍张照片开始吧</view>
-      </view>
+    <view class="companion-card" bindtap="goChat">
+      <view class="companion-avatar">🦫</view>
+      <view class="companion-body"><view class="companion-title">噜哒聊天室</view><view class="companion-text">{{companionText}}</view></view>
+      <view class="companion-arrow">›</view>
+    </view>
 
-      <block wx:if="{{hasRecords}}">
-        <food-record-card wx:for="{{todayRecords}}" wx:key="id" record="{{item}}" />
-      </block>
+    <view class="section section-tight today-section" wx:if="{{hasRecords}}">
+      <view class="section-title"><text>今天的记录</text><text class="section-link" bindtap="goRecords">全部 ›</text></view>
+      <food-record-card wx:for="{{todayRecords}}" wx:key="id" record="{{item}}" />
+    </view>
+
+    <view class="card empty home-empty" wx:if="{{!loading && !hasRecords}}">
+      <view class="empty-emoji">🍽️</view><view class="empty-text">今天还没有记录饮食</view><view class="empty-sub">从一张照片开始，给这一天留一点痕迹。</view>
     </view>
   </block>
+
+  <view class="lulu-dock" catchtap="toggleLuluMenu">
+    <view class="lulu-ping" wx:if="{{menuOpen}}"></view>
+    <image class="lulu-dock-image" src="/assets/images/ttl.png" mode="widthFix" />
+  </view>
+  <view class="lulu-menu {{menuOpen ? 'lulu-menu-show' : ''}}" catchtap="closeLuluMenu">
+    <view class="lulu-menu-head"><view><view class="menu-eyebrow">噜噜的小菜单</view><view class="menu-title">想去哪里看看？</view></view><view class="menu-close">×</view></view>
+    <view class="lulu-menu-item" wx:for="{{menuItems}}" wx:key="key" data-key="{{item.key}}" catchtap="onMenuTap"><view class="menu-item-icon">{{item.icon}}</view><view class="menu-item-copy"><view>{{item.label}}</view><text>{{item.hint}}</text></view><view class="menu-item-arrow">›</view></view>
+  </view>
+
+  <!-- 第一次进入：认领身份弹窗 -->
+  <view class="claim-mask" wx:if="{{needClaim}}" catchtap="noop">
+    <view class="claim-modal">
+      <image class="claim-avatar" src="/assets/images/ddyavatar.jpg" mode="aspectFill" />
+      <view class="claim-title">你是谁呀？</view>
+      <view class="claim-desc">这张餐桌只属于你们两个人，选一次就好。</view>
+      <button class="btn btn-primary btn-block" data-role="qiyue" bindtap="onClaim">我是祈栎</button>
+      <button class="btn btn-ghost btn-block" data-role="qinghui" bindtap="onClaim">我是清辉</button>
+    </view>
+  </view>
 </view>
+

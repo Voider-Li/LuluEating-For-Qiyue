@@ -1,67 +1,54 @@
-const foodService = require('../../services/food');
-const nutritionUtil = require('../../utils/nutrition');
+const statisticsService = require('../../services/statistics');
 const format = require('../../utils/format');
 
 const RANGE_DAYS = { week: 7, month: 30 };
 const MEAL_KEYS = ['breakfast', 'lunch', 'dinner', 'snack'];
 
-function buildStats(records) {
-  const allFoods = records.reduce(function (acc, r) {
-    return acc.concat(r.foods || r.food_items || []);
-  }, []);
-  const totals = nutritionUtil.totals(allFoods);
+// 把 statistics 服务返回的口径，整形成页面要的形状
+function buildStats(raw) {
+  const totals = raw.totals || {};
+  const averages = raw.averages || {};
+  const mealDistribution = raw.mealDistribution || {};
+  const overallDistribution = raw.overallDistribution || {};
+  const balanceRates = raw.balanceRates || {};
+  const meals = totals.meals || 0;
 
-  const mealCounts = {};
-  records.forEach(function (r) {
-    const key = MEAL_KEYS.indexOf(r.meal_type) >= 0 ? r.meal_type : 'other';
-    mealCounts[key] = (mealCounts[key] || 0) + 1;
-  });
-
-  const meals = MEAL_KEYS.map(function (key) {
-    const count = mealCounts[key] || 0;
+  const mealRows = MEAL_KEYS.map(function (key) {
+    const count = mealDistribution[key] || 0;
     return {
       key: key,
       label: format.mealTypeText(key),
       count: count,
-      width: records.length ? Math.round((count / records.length) * 100) : 0
+      width: meals ? Math.round((count / meals) * 100) : 0
     };
   });
 
   const dims = format.DIMENSIONS.map(function (d) {
-    const good = records.filter(function (r) {
-      return r.balance && r.balance[d.key] === 'good';
-    }).length;
+    const rate = balanceRates[d.key] || {};
+    const good = rate.good || 0;
     return {
       key: d.key,
       label: d.label,
       count: good,
-      total: records.length,
-      rate: records.length ? Math.round((good / records.length) * 100) : 0
+      total: meals,
+      rate: meals ? Math.round((good / meals) * 100) : 0
     };
   });
 
-  const overallCounts = {};
-  records.forEach(function (r) {
-    const key = r.overall || 'other';
-    overallCounts[key] = (overallCounts[key] || 0) + 1;
-  });
-  const overalls = Object.keys(overallCounts).map(function (key) {
-    return {
-      key: key,
-      text: format.overallMeta(key).text,
-      color: format.overallMeta(key).color,
-      bg: format.overallMeta(key).bg,
-      count: overallCounts[key]
-    };
-  });
+  const overalls = Object.keys(overallDistribution)
+    .filter(function (key) { return overallDistribution[key] > 0; })
+    .map(function (key) {
+      const meta = format.overallMeta(key);
+      return { key: key, text: meta.text, color: meta.color, bg: meta.bg, count: overallDistribution[key] };
+    });
 
   return {
-    records: records.length,
-    calories: totals.calories,
-    protein: totals.protein,
-    avgCalories: records.length ? Math.round(totals.calories / records.length) : 0,
-    avgProtein: records.length ? Math.round((totals.protein / records.length) * 10) / 10 : 0,
-    meals: meals,
+    records: meals,
+    calories: Math.round(totals.kcal || 0),
+    protein: Math.round(totals.protein || 0),
+    avgCalories: averages.kcalPerMeal || 0,
+    avgProtein: averages.proteinPerMeal || 0,
+    meals: mealRows,
     dims: dims,
     overalls: overalls
   };
@@ -88,15 +75,13 @@ Page({
 
   async load() {
     try {
-      const records = await foodService.getAllRecords();
       const days = RANGE_DAYS[this.data.range] || 7;
-      const cutoff = Date.now() - days * 86400000;
-      const ranged = (records || []).filter(function (r) {
-        return r.eaten_at >= cutoff;
-      });
+      // cloud 模式走 stats 云函数（客户端取不了 >100 条、也不能 aggregate）
+      const raw = await statisticsService.getStats(days);
+      const stats = buildStats(raw);
       this.setData({
-        stats: buildStats(ranged),
-        empty: ranged.length === 0,
+        stats: stats,
+        empty: stats.records === 0,
         loading: false
       });
     } catch (e) {

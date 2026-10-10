@@ -1,5 +1,6 @@
 const CONFIG = require('../config');
 const supabase = require('./supabase');
+const cloud = require('./cloud');
 const authService = require('./auth');
 
 function mockRecommendation() {
@@ -11,6 +12,28 @@ function mockRecommendation() {
   };
 }
 
+// 上下文（今天吃了啥 + 口味偏好）由 ai 云函数自己组装，前端不用拼
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+// 每次推荐存一份，方便过几天回看"当时推荐了番茄炒蛋，我最后吃的是泡面"
+function saveRecommendation(result) {
+  try {
+    cloud.collection('meal_recommendations').add({
+      data: {
+        title: result.title,
+        reason: result.reason,
+        suggestions: result.suggestions,
+        summary: result.summary,
+        for_date: todayStr(),
+        created_at: Date.now()
+      }
+    }).catch(function () { /* 存不上不影响展示 */ });
+  } catch (e) { /* 忽略 */ }
+}
+
 function getRecommendation() {
   if (CONFIG.USE_MOCK_DATA) {
     return new Promise(function (resolve) {
@@ -19,6 +42,20 @@ function getRecommendation() {
       }, 1200);
     });
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return cloud.call('ai', { action: 'recommend' }).then(function (res) {
+      const result = {
+        title: res.title || '下一餐推荐',
+        reason: res.reason || '',
+        suggestions: res.suggestions || [],
+        summary: res.summary || ''
+      };
+      saveRecommendation(result);
+      return result;
+    });
+  }
+
   const token = authService.getToken();
   return supabase.invokeFunction('recommend-meal', {}, token);
 }

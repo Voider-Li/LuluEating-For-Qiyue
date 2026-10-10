@@ -1,5 +1,6 @@
 const CONFIG = require('../config');
 const supabase = require('./supabase');
+const cloud = require('./cloud');
 const authService = require('./auth');
 
 const MOCK_SEED = [
@@ -15,10 +16,35 @@ function loadLocal() {
   return MOCK_SEED.slice();
 }
 
+function shape(d) {
+  return {
+    id: d._id,
+    name: d.name,
+    quantity: d.quantity || '',
+    note: d.note || '',
+    expire_at: d.expire_at || null,
+    used: !!d.used
+  };
+}
+
 function list() {
   if (CONFIG.USE_MOCK_DATA) {
     return Promise.resolve(loadLocal());
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return authService.getCurrentUser().then(function (user) {
+      return cloud.collection('ingredients')
+        .where({ _openid: user.openid })
+        .orderBy('created_at', 'asc')
+        .limit(100)
+        .get()
+        .then(function (res) {
+          return (res.data || []).map(shape);
+        });
+    });
+  }
+
   return authService.getCurrentUser().then(function (user) {
     return supabase.selectFrom('ingredients', {
       columns: 'id,name,quantity,note,created_at',
@@ -42,6 +68,25 @@ function add(name, quantity, note) {
     wx.setStorageSync('mock_ingredients', list);
     return Promise.resolve(item);
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return authService.getCurrentUser().then(function (user) {
+      const now = Date.now();
+      const doc = {
+        // 客户端 add 不能写 _openid，云开发自动带上创建者
+        name: name,
+        quantity: quantity || '',
+        note: note || '',
+        expire_at: null,
+        used: false,
+        created_at: now
+      };
+      return cloud.collection('ingredients').add({ data: doc }).then(function (res) {
+        return shape(Object.assign({ _id: res._id }, doc));
+      });
+    });
+  }
+
   return authService.getCurrentUser().then(function (user) {
     return supabase.insertInto('ingredients', {
       user_id: user.id,
@@ -58,6 +103,11 @@ function remove(id) {
     wx.setStorageSync('mock_ingredients', list);
     return Promise.resolve();
   }
+
+  if (CONFIG.BACKEND === 'cloud') {
+    return cloud.collection('ingredients').doc(id).remove().then(function () { return true; });
+  }
+
   return authService.getCurrentUser().then(function (user) {
     return supabase.deleteFrom('ingredients', { id: id, user_id: user.id });
   });

@@ -7,12 +7,13 @@
     "pages/ingredients/ingredients",
     "pages/preferences/preferences",
     "pages/recommendation/recommendation",
-    "pages/chat/chat"
+    "pages/chat/chat",
+    "pages/favorites/favorites"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFF6DE",
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "膳食助手",
+    "navigationBarTitleText": "饮食助手",
     "navigationStyle": "custom",
     "backgroundColor": "#FFF6DE",
     "backgroundTextStyle": "light"
@@ -24,24 +25,9 @@
     "backgroundColor": "#FFFDF7",
     "borderStyle": "white",
     "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "assets/tabbar/home.png",
-        "selectedIconPath": "assets/tabbar/home-active.png"
-      },
-      {
-        "pagePath": "pages/record/record",
-        "text": "记录",
-        "iconPath": "assets/tabbar/record.png",
-        "selectedIconPath": "assets/tabbar/record-active.png"
-      },
-      {
-        "pagePath": "pages/ingredients/ingredients",
-        "text": "食材",
-        "iconPath": "assets/tabbar/ingredients.png",
-        "selectedIconPath": "assets/tabbar/ingredients-active.png"
-      }
+      { "pagePath": "pages/index/index", "text": "首页", "iconPath": "assets/tabbar/home.png", "selectedIconPath": "assets/tabbar/home-active.png" },
+      { "pagePath": "pages/record/record", "text": "记录", "iconPath": "assets/tabbar/record.png", "selectedIconPath": "assets/tabbar/record-active.png" },
+      { "pagePath": "pages/ingredients/ingredients", "text": "食材", "iconPath": "assets/tabbar/ingredients.png", "selectedIconPath": "assets/tabbar/ingredients-active.png" }
     ]
   },
   "style": "v2",

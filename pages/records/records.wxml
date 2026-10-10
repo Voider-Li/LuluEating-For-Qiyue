@@ -1,9 +1,22 @@
 <view class="page">
   <custom-nav-bar />
+
+  <view class="scope-bar">
+    <view class="scope-item {{scope === 'both' ? 'scope-active' : ''}}" data-scope="both" bindtap="onScope">我们俩</view>
+    <view class="scope-item {{scope === 'mine' ? 'scope-active' : ''}}" data-scope="mine" bindtap="onScope">只看我的</view>
+  </view>
+
   <block wx:if="{{groups.length}}">
     <block wx:for="{{groups}}" wx:key="label" wx:for-item="group">
       <view class="group-label">{{group.label}}</view>
-      <food-record-card wx:for="{{group.items}}" wx:key="id" record="{{item}}" />
+      <food-record-card
+        wx:for="{{group.items}}"
+        wx:key="id"
+        record="{{item}}"
+        reactions="{{reactions[item.id]}}"
+        show-owner="{{scope === 'both'}}"
+        bindchanged="onCardChanged"
+      />
     </block>
   </block>
 

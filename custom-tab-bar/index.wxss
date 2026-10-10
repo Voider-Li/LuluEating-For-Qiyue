@@ -2,8 +2,8 @@
   position: fixed;
   left: 24rpx;
   right: 24rpx;
-  bottom: calc(constant(safe-area-inset-bottom) + 30rpx);
-  bottom: calc(env(safe-area-inset-bottom) + 30rpx);
+  bottom: calc(constant(safe-area-inset-bottom) + 18rpx);
+  bottom: calc(env(safe-area-inset-bottom) + 18rpx);
   z-index: 999;
   display: flex;
   align-items: center;

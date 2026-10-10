@@ -1,8 +1,18 @@
 <view class="page tab-page">
   <custom-nav-bar />
+
+  <view class="record-hero">
+    <view class="record-hero-copy">
+      <view class="eyebrow">TODAY'S TABLE ? 记录此刻</view>
+      <view class="record-hero-title">把这一餐，留给以后的自己</view>
+      <view class="record-hero-sub">拍照识别食物，也可以手动补充。认真吃饭这件事，值得被记下来。</view>
+    </view>
+    <view class="record-hero-mark">🥣</view>
+  </view>
   <!-- 餐次选择 -->
   <view class="card">
     <view class="card-title">这一餐是？</view>
+    <view class="card-subtitle">先选餐次，再开始记录</view>
     <view class="meal-row">
       <view
         wx:for="{{mealOptions}}"
@@ -17,11 +27,13 @@
   <!-- 图片选择 -->
   <view class="card">
     <view class="card-title">拍一张照片</view>
+    <view class="card-subtitle">让噜噜帮你认出这顿饭里有什么</view>
     <view class="image-picker" bindtap="onChooseImage">
       <image wx:if="{{imagePath}}" src="{{imagePath}}" mode="aspectFill" class="preview" />
       <view wx:else class="picker-placeholder">
         <view class="picker-emoji">📷</view>
         <view class="picker-text">拍照 / 从相册选择</view>
+        <view class="picker-tip">支持先拍照，之后再修改识别结果</view>
       </view>
       <view class="scan-wrap" wx:if="{{analyzing && imagePath}}">
         <view class="scan-shade"></view>
@@ -33,7 +45,7 @@
 
   <!-- 识别按钮 -->
   <button
-    class="btn btn-primary btn-block"
+    class="btn btn-primary btn-block analyze-button"
     bindtap="onAnalyze"
     loading="{{analyzing}}"
     disabled="{{analyzing || !imagePath}}"
@@ -54,7 +66,13 @@
   <!-- 识别结果 -->
   <block wx:if="{{result}}">
     <view class="card result-card">
-      <view class="card-title">识别结果</view>
+      <view class="result-heading">
+        <view>
+          <view class="card-title">识别结果</view>
+          <view class="card-subtitle">可以点 × 删除，也可以手动补充</view>
+        </view>
+        <view class="result-badge">已识别</view>
+      </view>
 
       <view class="foods-editor">
         <view class="food-chip" wx:for="{{foods}}" wx:key="_key">
@@ -83,6 +101,10 @@
         nutrition="{{nutrition}}"
         analyze-time="{{analyzeTime}}"
       />
+      <view class="note-card">
+        <view class="note-card-title"><text>嘎哒碎碎念</text><text class="note-card-hint">可写可不写</text></view>
+        <textarea class="note-input" maxlength="200" placeholder="记录一下今天的小事、心情，或这顿饭为什么想吃" value="{{note}}" bindinput="onNoteInput"></textarea>
+      </view>
     </view>
 
     <button
@@ -93,3 +115,4 @@
     >保存这顿记录</button>
   </block>
 </view>
+

@@ -1,10 +1,10 @@
 <view class="food-record-card" bindtap="onTap">
-  <view class="head">
-    <text class="time">{{timeText}}</text>
-    <text class="meal">{{mealText}}</text>
-    <view class="overall" wx:if="{{overallMeta.text}}" style="color: {{overallMeta.color}}; background: {{overallMeta.bg}};">{{overallMeta.text}}</view>
-  </view>
+  <image wx:if="{{record.image_path}}" class="record-photo" src="{{record.image_path}}" mode="aspectFill" catchtap="onPreview" />
+  <view class="head"><text class="owner" wx:if="{{showOwner && ownerName}}">{{ownerName}}</text><text class="time">{{timeText}}</text><text class="meal">{{mealText}}</text><view class="overall" wx:if="{{overallMeta.text}}" style="color: {{overallMeta.color}}; background: {{overallMeta.bg}};">{{overallMeta.text}}</view></view>
   <view class="foods">{{foodsText}}</view>
   <view class="nutrition" wx:if="{{nutritionText}}">🔥 {{nutritionText}}</view>
   <view class="summary" wx:if="{{record.summary}}">{{record.summary}}</view>
+  <view class="ga-note" wx:if="{{record.note || record.ga_da_note}}"><text class="ga-note-label">嘎哒碎碎念</text><text>“{{record.note || record.ga_da_note}}”</text></view>
+  <view class="record-actions" catchtap="onActionArea"><view class="action {{liked ? 'action-active' : ''}}" catchtap="onLike">{{liked ? '♥' : '♡'}} <text>{{likeCount || '点赞'}}</text></view><view class="action" catchtap="onComment">💬 <text>{{commentCount || '评论'}}</text></view><view class="action {{favorite ? 'action-favorite' : ''}}" catchtap="onFavorite">{{favorite ? '★' : '☆'}} <text>{{favorite ? '已收藏' : '收藏'}}</text></view></view>
+  <view class="comment-preview" wx:if="{{commentPreview}}"><text class="comment-name">{{commentPreviewName}}</text>{{commentPreview}}</view>
 </view>

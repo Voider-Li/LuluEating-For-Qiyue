@@ -19,17 +19,20 @@
     "minifyWXML": true,
     "localPlugins": false,
     "disableUseStrict": false,
-    "condition": false,
+    "condition": true,
     "swc": false,
     "disableSWC": true
   },
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
   "simulatorPluginLibVersion": {},
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "folder", "value": ".git" }
+    ],
     "include": []
   },
-  "appid": "wxf8f930a78d53c6c0",
+  "appid": "wxa77915364c09bd00",
   "editorSetting": {},
   "libVersion": "3.17.2"
 }

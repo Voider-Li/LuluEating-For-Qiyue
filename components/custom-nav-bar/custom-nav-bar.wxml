@@ -1,9 +1,24 @@
 <view class="nav-bar" style="height: {{totalHeight}}px;">
   <view class="nav-main" style="padding-top: {{statusBarHeight}}px;">
-    <view class="nav-left">
-      <view class="nav-title">噜噜会吃饭</view>
-      <view class="nav-sub">LuluEating For Qiyue</view>
+    <view class="nav-left-wrap">
+      <view
+        wx:if="{{showBack}}"
+        class="nav-back"
+        hover-class="nav-back-hover"
+        catchtap="onBack"
+      >
+        <text class="nav-back-icon">‹</text>
+        <text class="nav-back-text">{{backLabel}}</text>
+      </view>
+      <view wx:else class="nav-left">
+        <view class="nav-title">噜噜会吃饭</view>
+        <view class="nav-sub">LuluEating For Qiyue</view>
+      </view>
     </view>
-    <view class="nav-date">{{navDate}}</view>
+
+    <view class="nav-right">
+      <view wx:if="{{!showBack}}" class="nav-tag">✨ 祈栎专属</view>
+      <view class="nav-date">{{navDate}}</view>
+    </view>
   </view>
 </view>

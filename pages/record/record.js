@@ -28,6 +28,7 @@ Page({
     overall: '',
     summary: '',
     suggestion: '',
+    note: '',
     steps: ['上传图片', 'AI 识别食物', '营养评估'],
     step: 0,
     progress: 0,
@@ -53,6 +54,8 @@ Page({
       count: 1,
       mediaType: ['image'],
       sourceType: ['camera', 'album'],
+      // 传云存储前先压缩，省流量、也避免单文件过大
+      sizeType: ['compressed'],
       success: (res) => {
         this.setData({
           imagePath: res.tempFiles[0].tempFilePath,
@@ -82,6 +85,7 @@ Page({
       overall: '',
       summary: '',
       suggestion: '',
+      note: '',
       step: 0,
       progress: 12,
       stepText: '正在上传图片…'
@@ -149,6 +153,9 @@ Page({
     this.setData({ foods: withKeys(foods) });
   },
 
+  onNoteInput(e) {
+    this.setData({ note: e.detail.value });
+  },
   onFoodInput(e) {
     this.setData({ newFoodName: e.detail.value });
   },
@@ -177,7 +184,8 @@ Page({
         balance: this.data.balance,
         overall: this.data.overall,
         summary: this.data.summary,
-        suggestion: this.data.suggestion
+        suggestion: this.data.suggestion,
+        note: this.data.note
       });
       wx.showToast({ title: '已保存', icon: 'success' });
       setTimeout(() => {
@@ -189,3 +197,5 @@ Page({
     this.setData({ saving: false });
   }
 });
+
+
