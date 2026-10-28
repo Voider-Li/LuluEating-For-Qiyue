@@ -13,13 +13,13 @@
   line-height: 64rpx;
   text-align: center;
   font-size: 26rpx;
-  color: #8B6A35;
+  color: var(--t-primary-soft);
   border-radius: 999rpx;
 }
 
 .scope-active {
-  background: #FFFDF7;
-  color: #5C4305;
+  background: var(--t-card);
+  color: var(--t-primary-ink);
   font-weight: 600;
   box-shadow: 0 2rpx 8rpx rgba(116, 91, 42, .10);
 }
@@ -27,7 +27,7 @@
 .group-label {
   font-size: 28rpx;
   font-weight: 600;
-  color: #7A756A;
+  color: var(--t-text-mid);
   margin: 28rpx 4rpx 16rpx;
 }
 

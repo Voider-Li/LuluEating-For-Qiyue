@@ -1,5 +1,5 @@
 .nav-bar {
-  background: #FFF6DE;
+  background: var(--t-bg);
   margin: -32rpx -32rpx 0;
   box-sizing: border-box;
   border-bottom: 1rpx solid rgba(255, 182, 39, 0.16);
@@ -29,7 +29,7 @@
   min-height: 64rpx;
   padding: 0 10rpx 0 4rpx;
   border-radius: 20rpx;
-  color: #8B6A35;
+  color: var(--t-primary-soft);
 }
 
 .nav-back-hover {
@@ -62,14 +62,14 @@
 .nav-title {
   font-size: 34rpx;
   font-weight: 700;
-  color: #3F3D38;
+  color: var(--t-text);
   line-height: 1.2;
   white-space: nowrap;
 }
 
 .nav-sub {
   font-size: 18rpx;
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 2rpx;
   letter-spacing: 0.5rpx;
   line-height: 1.2;
@@ -104,7 +104,7 @@
   font-size: 18rpx;
   letter-spacing: 1rpx;
   color: #FFF9EC;
-  background: linear-gradient(120deg, #F0A80F 0%, #D97D0A 55%, #C96F05 100%);
+  background: linear-gradient(120deg, var(--t-grad-1) 0%, var(--t-grad-2) 55%, var(--t-grad-3) 100%);
   box-shadow: 0 0 12rpx rgba(217, 125, 10, 0.5);
   animation: tagGlow 2.2s ease-in-out infinite;
 }
@@ -142,6 +142,6 @@
   padding: 0 18rpx;
   font-size: 23rpx;
   font-weight: 600;
-  color: #B57D0A;
-  background: #FFF1CC;
+  color: var(--t-primary-deep);
+  background: var(--t-chip);
 }

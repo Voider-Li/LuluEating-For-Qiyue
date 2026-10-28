@@ -1,4 +1,4 @@
-<view class="page tab-page home-page" bindtap="closeLuluMenu">
+<view class="page theme-{{theme}} tab-page home-page" bindtap="closeLuluMenu">
   <custom-nav-bar />
 
   <view class="home-intro" wx:if="{{!needLogin && !needClaim && !blocked}}">
@@ -26,6 +26,11 @@
   </view>
 
   <block wx:elif="{{!needClaim}}">
+    <view class="daily-banner" wx:if="{{banner}}" bindtap="goChat">
+      <image wx:if="{{banner.image}}" class="daily-banner-img" src="{{banner.image}}" mode="aspectFill" />
+      <view class="daily-banner-text" wx:if="{{banner.text}}">{{banner.text}}</view>
+    </view>
+
     <view class="hero-card">
       <view class="hero-copy">
         <view class="hero-kicker">TODAY'S TABLE</view>

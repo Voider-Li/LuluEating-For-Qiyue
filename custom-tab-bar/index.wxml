@@ -1,4 +1,4 @@
-<view class="tab-bar">
+<view class="tab-bar theme-{{theme}}">
   <view class="tab-group">
     <view
       wx:for="{{list}}"

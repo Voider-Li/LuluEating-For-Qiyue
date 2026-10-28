@@ -16,6 +16,7 @@ function withKeys(foods) {
 
 Page({
   data: {
+    theme: 'warm',
     mealOptions: MEAL_OPTIONS,
     mealType: 'lunch',
     imagePath: '',
@@ -39,6 +40,7 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 });
     }

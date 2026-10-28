@@ -2,6 +2,7 @@ const ingredientService = require('../../services/ingredients');
 
 Page({
   data: {
+    theme: 'warm',
     list: [],
     name: '',
     quantity: '',
@@ -11,6 +12,7 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }

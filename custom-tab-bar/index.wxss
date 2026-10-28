@@ -1,3 +1,7 @@
+/* 自定义 tabBar 不在页面节点树里，拿不到页面上的 CSS 变量，
+   所以这里也 import 一份主题变量（唯一来源，跟 app.wxss 一致） */
+@import "../styles/theme.wxss";
+
 .tab-bar {
   position: fixed;
   left: 24rpx;
@@ -60,16 +64,16 @@
   margin-top: 6rpx;
   font-size: 20rpx;
   line-height: 1;
-  color: #9B968A;
+  color: var(--t-text-sub);
 }
 
 .tab-item-active .tab-text {
-  color: #B57D0A;
+  color: var(--t-primary-deep);
   font-weight: 600;
 }
 
 .tab-item-active {
-  background: linear-gradient(180deg, rgba(255, 182, 39, 0.22), rgba(255, 182, 39, 0.1));
+  background: linear-gradient(180deg, var(--t-glow-b), var(--t-glow-a));
   box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.7);
 }
 
@@ -87,11 +91,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, #FFC94F 0%, #FFB627 55%, #F5A312 100%);
+  background: linear-gradient(160deg, var(--t-grad-4) 0%, var(--t-primary) 55%, var(--t-grad-5) 100%);
   box-shadow:
-    0 10rpx 24rpx rgba(245, 163, 18, 0.38),
+    0 0 22rpx var(--t-btn-glow),
+    0 10rpx 24rpx var(--t-btn-glow),
     inset 0 2rpx 0 rgba(255, 255, 255, 0.65);
+  animation: chatGlow 2.4s ease-in-out infinite;
   transition: transform 0.15s ease;
+}
+
+/* 呼吸式的光晕：暖色主题是暖光，粉色主题是粉光 */
+@keyframes chatGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 16rpx var(--t-btn-glow),
+      0 8rpx 20rpx rgba(0, 0, 0, 0.16),
+      inset 0 2rpx 0 rgba(255, 255, 255, 0.65);
+  }
+  50% {
+    box-shadow:
+      0 0 38rpx var(--t-btn-glow),
+      0 12rpx 28rpx rgba(0, 0, 0, 0.2),
+      inset 0 2rpx 0 rgba(255, 255, 255, 0.78);
+  }
 }
 
 .chat-btn-hover {
@@ -107,6 +129,6 @@
   margin-top: 2rpx;
   font-size: 18rpx;
   line-height: 1.1;
-  color: #5C4305;
+  color: var(--t-primary-ink);
   font-weight: 600;
 }

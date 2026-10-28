@@ -6,22 +6,22 @@
 .meal-pill {
   padding: 14rpx 36rpx;
   border-radius: 999rpx;
-  background: #F4F1E9;
-  color: #7A756A;
+  background: var(--t-field);
+  color: var(--t-text-mid);
   font-size: 27rpx;
   margin: 0 16rpx 16rpx 0;
 }
 
 .meal-pill-active {
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
 }
 
 .image-picker {
   position: relative;
   border-radius: 20rpx;
   overflow: hidden;
-  background: #F4F1E9;
+  background: var(--t-field);
   min-height: 360rpx;
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@
 }
 
 .picker-text {
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 12rpx;
 }
 
@@ -71,7 +71,7 @@
   left: 0;
   right: 0;
   height: 6rpx;
-  background: linear-gradient(90deg, rgba(255, 182, 39, 0), #FFB627 50%, rgba(255, 182, 39, 0));
+  background: linear-gradient(90deg, rgba(255, 182, 39, 0), var(--t-primary) 50%, rgba(255, 182, 39, 0));
   box-shadow: 0 0 24rpx rgba(255, 182, 39, 0.9);
   animation: scanMove 1.8s ease-in-out infinite;
 }
@@ -93,7 +93,7 @@
   top: 20rpx;
   left: 20rpx;
   background: rgba(255, 253, 247, 0.92);
-  color: #B57D0A;
+  color: var(--t-primary-deep);
   font-size: 24rpx;
   padding: 8rpx 20rpx;
   border-radius: 999rpx;
@@ -101,7 +101,7 @@
 
 .analyze-panel {
   margin-top: 24rpx;
-  background: #FFFDF7;
+  background: var(--t-card);
   border-radius: 20rpx;
   padding: 26rpx 28rpx;
   box-shadow: 0 4rpx 12rpx rgba(96, 86, 62, 0.05);
@@ -118,7 +118,7 @@
   height: 32rpx;
   border-radius: 50%;
   border: 2rpx solid #E2DCCB;
-  color: #B57D0A;
+  color: var(--t-primary-deep);
   font-size: 22rpx;
   display: flex;
   align-items: center;
@@ -127,9 +127,9 @@
 }
 
 .step-active {
-  border-color: #FFB627;
-  background: #FFB627;
-  color: #5C4305;
+  border-color: var(--t-primary);
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
 }
 
 .step-done {
@@ -140,24 +140,24 @@
 .step-name {
   margin-left: 14rpx;
   font-size: 26rpx;
-  color: #9B968A;
+  color: var(--t-text-sub);
 }
 
 .step-name-active {
-  color: #B57D0A;
+  color: var(--t-primary-deep);
   font-weight: 600;
 }
 
 .step-percent {
   margin-left: auto;
   font-size: 24rpx;
-  color: #FFB627;
+  color: var(--t-primary);
   font-weight: 600;
 }
 
 .bar {
   height: 12rpx;
-  background: #F4F1E9;
+  background: var(--t-field);
   border-radius: 999rpx;
   overflow: hidden;
 }
@@ -165,7 +165,7 @@
 .bar-fill {
   height: 100%;
   border-radius: 999rpx;
-  background: linear-gradient(90deg, #FFD76A, #FFB627);
+  background: linear-gradient(90deg, #FFD76A, var(--t-primary));
   transition: width 0.35s ease;
 }
 
@@ -180,8 +180,8 @@
 .food-chip {
   display: inline-flex;
   align-items: center;
-  background: #FFF1CC;
-  color: #B57D0A;
+  background: var(--t-chip);
+  color: var(--t-primary-deep);
   border-radius: 999rpx;
   padding: 10rpx 22rpx;
   margin: 0 12rpx 16rpx 0;
@@ -216,8 +216,8 @@
 
 .add-food-btn {
   margin-left: 16rpx;
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-size: 26rpx;
   height: 88rpx;
   line-height: 88rpx;

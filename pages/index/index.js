@@ -1,9 +1,12 @@
 const app = getApp();
 const foodService = require('../../services/food');
 const authService = require('../../services/auth');
+const appConfig = require('../../services/app-config');
 
 Page({
   data: {
+    theme: 'warm',
+    banner: null,
     user: null,
     needLogin: false,
     needClaim: false,
@@ -35,11 +38,32 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 });
     }
     this.setGreeting();
     this.refresh();
+    this.loadDaily();
+  },
+
+  // 首页横幅：内容来自数据库 app_config（改内容不用发版）。
+  // 是否显示由总开关 birthday_mode 决定（也可用 banner_enabled 单独覆盖）。
+  loadDaily() {
+    // 用 Promise.resolve() 包一层：即使 load() 同步抛错也能被 catch 接住
+    Promise.resolve()
+      .then(() => appConfig.load())
+      .then((cfg) => {
+        const r = appConfig.resolve(cfg);
+        const banner = (r.bannerOn && (r.bannerText || r.bannerImage))
+          ? { text: r.bannerText, image: r.bannerImage }
+          : null;
+        this.setData({ banner: banner });
+      })
+      .catch((e) => {
+        console.warn('[banner] 读配置失败：', e && e.message);
+        this.setData({ banner: null });
+      });
   },
 
   setGreeting() {

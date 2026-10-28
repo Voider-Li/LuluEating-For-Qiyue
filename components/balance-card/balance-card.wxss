@@ -29,7 +29,7 @@
 .score {
   display: flex;
   align-items: baseline;
-  background: #FFF1CC;
+  background: var(--t-chip);
   border-radius: 999rpx;
   padding: 4rpx 20rpx;
 }
@@ -37,12 +37,12 @@
 .score-num {
   font-size: 34rpx;
   font-weight: 700;
-  color: #B57D0A;
+  color: var(--t-primary-deep);
 }
 
 .score-label {
   font-size: 20rpx;
-  color: #B57D0A;
+  color: var(--t-primary-deep);
   margin-left: 6rpx;
 }
 
@@ -63,13 +63,13 @@
   display: block;
   font-size: 32rpx;
   font-weight: 700;
-  color: #3F3D38;
+  color: var(--t-text);
 }
 
 .macro-label {
   display: block;
   font-size: 22rpx;
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 4rpx;
 }
 
@@ -82,13 +82,13 @@
 .dim-label {
   width: 110rpx;
   font-size: 24rpx;
-  color: #7A756A;
+  color: var(--t-text-mid);
 }
 
 .dim-bar {
   flex: 1;
   height: 14rpx;
-  background: #F4F1E9;
+  background: var(--t-field);
   border-radius: 999rpx;
   overflow: hidden;
   margin: 0 16rpx;
@@ -115,8 +115,8 @@
 .suggestion {
   margin-top: 14rpx;
   font-size: 27rpx;
-  color: #B57D0A;
-  background: #FFF6DE;
+  color: var(--t-primary-deep);
+  background: var(--t-bg);
   padding: 16rpx 20rpx;
   border-radius: 16rpx;
 }

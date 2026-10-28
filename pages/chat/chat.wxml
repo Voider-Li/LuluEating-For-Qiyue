@@ -1,4 +1,4 @@
-<view class="page table-page">
+<view class="page theme-{{theme}} table-page">
   <custom-nav-bar />
 
   <view class="t-head">
@@ -45,6 +45,11 @@
       <image wx:if="{{item.avatar}}" class="mate-face" src="{{item.avatar}}" mode="aspectFill" />
       <view wx:else class="mate-face mate-face-text" style="background:{{item.color}};color:{{item.textColor}}">{{item.emoji}}</view>
       <view class="mate-name">{{item.name}}</view>
+    </view>
+
+    <view class="table-gift" wx:if="{{gift}}" catchtap="onGiftTap">
+      <image wx:if="{{gift.image}}" class="table-gift-img" src="{{gift.image}}" mode="aspectFit" />
+      <text wx:else class="table-gift-emoji">🎁</text>
     </view>
   </view>
 

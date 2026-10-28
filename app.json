@@ -8,7 +8,8 @@
     "pages/preferences/preferences",
     "pages/recommendation/recommendation",
     "pages/chat/chat",
-    "pages/favorites/favorites"
+    "pages/favorites/favorites",
+    "pages/story/story"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FFF6DE",

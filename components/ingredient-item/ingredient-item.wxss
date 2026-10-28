@@ -1,7 +1,7 @@
 .ingredient-item {
   display: flex;
   align-items: center;
-  background: #FFFDF7;
+  background: var(--t-card);
   border-radius: 20rpx;
   padding: 24rpx 28rpx;
   margin-bottom: 16rpx;
@@ -32,7 +32,7 @@
 
 .meta {
   font-size: 24rpx;
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 4rpx;
 }
 

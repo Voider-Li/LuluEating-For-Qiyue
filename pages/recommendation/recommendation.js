@@ -3,12 +3,14 @@ const foodService = require('../../services/food');
 
 Page({
   data: {
+    theme: 'warm',
     loading: false,
     result: null,
     todayCount: 0
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     this.refreshCount();
   },
 

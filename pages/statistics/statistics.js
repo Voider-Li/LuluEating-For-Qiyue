@@ -56,6 +56,7 @@ function buildStats(raw) {
 
 Page({
   data: {
+    theme: 'warm',
     range: 'week',
     loading: true,
     stats: null,
@@ -63,6 +64,7 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     this.load();
   },
 

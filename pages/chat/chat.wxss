@@ -74,7 +74,7 @@
   margin-top: 8rpx;
   text-align: center;
   font-size: 22rpx;
-  color: #B7A36D;
+  color: var(--t-accent);
   letter-spacing: 2rpx;
 }
 
@@ -101,9 +101,9 @@
   width: 108rpx;
   height: 108rpx;
   border-radius: 50%;
-  border: 5rpx solid #FFFDF7;
+  border: 5rpx solid var(--t-card);
   box-sizing: border-box;
-  background: #FFFDF7;
+  background: var(--t-card);
   box-shadow: 0 8rpx 20rpx rgba(116, 91, 42, .18);
 }
 
@@ -134,7 +134,7 @@
   height: 112rpx;
   border-radius: 50%;
   box-sizing: border-box;
-  background: #FFFDF7;
+  background: var(--t-card);
   border: 3rpx solid #E8D6AE;
   box-shadow: 0 4rpx 12rpx rgba(116, 91, 42, .10);
   display: flex;
@@ -147,8 +147,8 @@
 
 /* 有照片：缩略图铺满 */
 .plate-has-photo {
-  border-color: #FFFDF7;
-  background: #F0E6D2;
+  border-color: var(--t-card);
+  background: var(--t-holder);
   box-shadow: 0 6rpx 16rpx rgba(116, 91, 42, .16);
 }
 
@@ -169,7 +169,7 @@
 .plate-meal {
   font-size: 24rpx;
   line-height: 1.2;
-  color: #A79C86;
+  color: var(--t-text-soft);
 }
 
 .plate-meal-sm {
@@ -207,9 +207,9 @@
   width: 92rpx;
   height: 92rpx;
   border-radius: 50%;
-  border: 5rpx solid #FFFDF7;
+  border: 5rpx solid var(--t-card);
   box-sizing: border-box;
-  background: #FFFDF7;
+  background: var(--t-card);
   box-shadow: 0 8rpx 18rpx rgba(116, 91, 42, .18);
 }
 
@@ -238,7 +238,7 @@
   margin: 0 4rpx 24rpx;
   padding: 20rpx 24rpx;
   border-radius: 24rpx;
-  background: #FFFDF7;
+  background: var(--t-card);
   border: 2rpx solid #F0E2C4;
   box-shadow: 0 8rpx 20rpx rgba(116, 91, 42, .08);
 }
@@ -267,19 +267,19 @@
 
 .bubble-name {
   font-size: 21rpx;
-  color: #A79C86;
+  color: var(--t-text-soft);
 }
 
 .bubble-text {
   margin-top: 2rpx;
   font-size: 27rpx;
   line-height: 1.55;
-  color: #4D473C;
+  color: var(--t-text-body);
 }
 
 /* 还在想的时候：文字淡一点 + 三个跳动的点 */
 .bubble-thinking .bubble-text {
-  color: #A79C86;
+  color: var(--t-text-soft);
 }
 
 .bubble-dots {
@@ -311,8 +311,8 @@
   line-height: 100rpx;
   text-align: center;
   border-radius: 999rpx;
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-size: 32rpx;
   font-weight: 600;
   letter-spacing: 2rpx;
@@ -320,7 +320,7 @@
 }
 
 .record-btn:active {
-  background: #F0A80F;
+  background: var(--t-grad-1);
 }
 
 /* ---------- 后厨送出来的惊喜 ---------- */
@@ -335,7 +335,7 @@
   padding: 20rpx 22rpx;
   margin-bottom: 12rpx;
   border-radius: 22rpx;
-  background: #FFF6DE;
+  background: var(--t-bg);
   border: 2rpx dashed #E8C87A;
 }
 
@@ -343,8 +343,8 @@
   flex: 0 0 auto;
   padding: 4rpx 14rpx;
   border-radius: 999rpx;
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-size: 20rpx;
 }
 
@@ -360,8 +360,8 @@
   flex: 0 0 auto;
   padding: 8rpx 18rpx;
   border-radius: 999rpx;
-  background: #FFFDF7;
-  color: #B57D0A;
+  background: var(--t-card);
+  color: var(--t-primary-deep);
   font-size: 22rpx;
 }
 
@@ -386,7 +386,7 @@
   padding: 32rpx 36rpx calc(40rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
   border-radius: 32rpx 32rpx 0 0;
-  background: #FFFDF7;
+  background: var(--t-card);
   box-shadow: 0 -12rpx 40rpx rgba(92, 67, 31, .2);
   transform: translateY(110%);
   transition: transform .22s ease;
@@ -407,14 +407,14 @@
 .bs-eyebrow {
   font-size: 20rpx;
   letter-spacing: 2rpx;
-  color: #B7A36D;
+  color: var(--t-accent);
 }
 
 .bs-title {
   margin-top: 2rpx;
   font-size: 40rpx;
   font-weight: 700;
-  color: #413D35;
+  color: var(--t-text-strong);
 }
 
 .bs-close {
@@ -432,7 +432,7 @@
   border-radius: 18rpx;
   background: #FFF8E9;
   font-size: 27rpx;
-  color: #4D473C;
+  color: var(--t-text-body);
 }
 
 .bs-row {
@@ -458,13 +458,13 @@
   padding: 10rpx 22rpx;
   border-radius: 999rpx;
   background: #FFF3D6;
-  color: #8B6A35;
+  color: var(--t-primary-soft);
   font-size: 24rpx;
 }
 
 .bs-chip-on {
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-weight: 600;
 }
 
@@ -474,8 +474,8 @@
   line-height: 92rpx;
   text-align: center;
   border-radius: 999rpx;
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-size: 30rpx;
   font-weight: 600;
   letter-spacing: 2rpx;
@@ -484,12 +484,12 @@
 .bs-list {
   margin-top: 32rpx;
   padding-top: 24rpx;
-  border-top: 1rpx solid #F0E6D2;
+  border-top: 1rpx solid var(--t-holder);
 }
 
 .bs-list-title {
   font-size: 23rpx;
-  color: #A79C86;
+  color: var(--t-text-soft);
   margin-bottom: 14rpx;
 }
 
@@ -507,13 +507,13 @@
 
 .bs-list-text {
   font-size: 26rpx;
-  color: #4D473C;
+  color: var(--t-text-body);
 }
 
 .bs-list-meta {
   margin-top: 4rpx;
   font-size: 21rpx;
-  color: #A79C86;
+  color: var(--t-text-soft);
 }
 
 .bs-list-del {
@@ -521,6 +521,45 @@
   padding: 8rpx 18rpx;
   border-radius: 999rpx;
   background: #F7F3EA;
-  color: #A79C86;
+  color: var(--t-text-soft);
   font-size: 22rpx;
+}
+
+/* ---------- 餐桌正中间的礼物 ---------- */
+.table-gift {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 136rpx;
+  height: 136rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 253, 247, 0.86);
+  animation: giftGlow 2.2s ease-in-out infinite;
+  z-index: 5;
+}
+
+/* 发光：一圈光晕 + 轻微起伏，像在招呼你打开 */
+@keyframes giftGlow {
+  0%, 100% {
+    box-shadow: 0 0 18rpx var(--t-btn-glow), 0 8rpx 22rpx rgba(92, 67, 31, 0.16);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 46rpx var(--t-btn-glow), 0 10rpx 26rpx rgba(92, 67, 31, 0.2);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+.table-gift-img {
+  width: 108rpx;
+  height: 108rpx;
+}
+
+.table-gift-emoji {
+  font-size: 76rpx;
+  line-height: 1;
 }

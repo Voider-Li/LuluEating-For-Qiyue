@@ -1,0 +1,77 @@
+/* ============================================================
+   主题变量（唯一来源）
+   app.wxss 和 custom-tab-bar/index.wxss 都 @import 这个文件，
+   保证两边颜色永远一致。
+
+   为什么 TabBar 要单独 import：
+   自定义 tabBar 是框架单独渲染的，不在页面节点树里，
+   拿不到页面上的 CSS 变量（会解析成空值 → 整条 background 失效 → 变透明）。
+
+   换主题：改 app_config 的 birthday_mode（或 theme）即可。
+   加第三套：下面复制一组 .theme-xxx。
+   ============================================================ */
+
+/* ---------- 暖色（默认） ---------- */
+page,
+.theme-warm {
+  --t-bg: #FFF6DE;
+  --t-card: #FFFDF7;
+  --t-chip: #FFF1CC;
+  --t-field: #F4F1E9;
+  --t-holder: #F0E6D2;
+
+  --t-primary: #FFB627;
+  --t-primary-deep: #B57D0A;
+  --t-primary-ink: #5C4305;
+  --t-primary-soft: #8B6A35;
+  --t-accent: #B7A36D;
+
+  --t-text: #3F3D38;
+  --t-text-strong: #413D35;
+  --t-text-sub: #9B968A;
+  --t-text-mid: #7A756A;
+  --t-text-soft: #A79C86;
+  --t-text-body: #4D473C;
+
+  --t-grad-1: #F0A80F;
+  --t-grad-2: #D97D0A;
+  --t-grad-3: #C96F05;
+  --t-grad-4: #FFC94F;
+  --t-grad-5: #F5A312;
+
+  --t-glow-a: rgba(255, 182, 39, 0.16);
+  --t-glow-b: rgba(255, 182, 39, 0.26);
+  --t-btn-glow: rgba(245, 163, 18, 0.5);
+}
+
+/* ---------- 粉色 ---------- */
+.theme-pink {
+  --t-bg: #FFF1F6;
+  --t-card: #FFF9FB;
+  --t-chip: #FFE3EE;
+  --t-field: #F9EFF4;
+  --t-holder: #F7E6EE;
+
+  --t-primary: #FF9BC0;
+  --t-primary-deep: #C2527E;
+  --t-primary-ink: #6B2445;
+  --t-primary-soft: #A8577C;
+  --t-accent: #C98FA8;
+
+  --t-text: #43333B;
+  --t-text-strong: #452F38;
+  --t-text-sub: #A98D9A;
+  --t-text-mid: #8A7280;
+  --t-text-soft: #B79DA9;
+  --t-text-body: #4E3B45;
+
+  --t-grad-1: #FFA8C8;
+  --t-grad-2: #E06A9B;
+  --t-grad-3: #D15C8D;
+  --t-grad-4: #FFB3CF;
+  --t-grad-5: #EE7BA6;
+
+  --t-glow-a: rgba(255, 155, 192, 0.18);
+  --t-glow-b: rgba(255, 155, 192, 0.30);
+  --t-btn-glow: rgba(255, 122, 172, 0.62);
+}

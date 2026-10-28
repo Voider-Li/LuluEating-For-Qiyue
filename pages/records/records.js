@@ -4,6 +4,7 @@ const interactions = require('../../services/interactions');
 
 Page({
   data: {
+    theme: 'warm',
     scope: 'both',   // 'both' 两个人的记录流 | 'mine' 只看我的
     groups: [],
     reactions: {},   // { [recordId]: { liked, likeCount, favorite, comments, commentCount } }
@@ -11,6 +12,7 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     this.load();
   },
 

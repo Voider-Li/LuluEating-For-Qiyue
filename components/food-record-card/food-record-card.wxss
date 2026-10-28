@@ -1,15 +1,15 @@
-.food-record-card { background: #FFFDF7; border-radius: 20rpx; padding: 24rpx 28rpx; margin-bottom: 20rpx; box-shadow: 0 4rpx 12rpx rgba(96, 86, 62, .05); }
-.record-photo { display: block; width: 100%; height: 400rpx; border-radius: 16rpx; margin-bottom: 20rpx; background: #F0E6D2; }
+.food-record-card { background: var(--t-card); border-radius: 20rpx; padding: 24rpx 28rpx; margin-bottom: 20rpx; box-shadow: 0 4rpx 12rpx rgba(96, 86, 62, .05); }
+.record-photo { display: block; width: 100%; height: 400rpx; border-radius: 16rpx; margin-bottom: 20rpx; background: var(--t-holder); }
 .head { display: flex; align-items: center; }
 .time { font-size: 30rpx; font-weight: 600; }
-.owner { font-size: 22rpx; color: #FFF9EC; background: #B57D0A; border-radius: 999rpx; padding: 3rpx 14rpx; margin-right: 14rpx; }
-.meal { font-size: 24rpx; color: #9B968A; margin-left: 16rpx; }
+.owner { font-size: 22rpx; color: #FFF9EC; background: var(--t-primary-deep); border-radius: 999rpx; padding: 3rpx 14rpx; margin-right: 14rpx; }
+.meal { font-size: 24rpx; color: var(--t-text-sub); margin-left: 16rpx; }
 .overall { margin-left: auto; font-size: 24rpx; padding: 4rpx 16rpx; border-radius: 999rpx; }
 .foods { margin-top: 14rpx; font-size: 28rpx; }
-.nutrition { margin-top: 8rpx; font-size: 24rpx; color: #B57D0A; }
+.nutrition { margin-top: 8rpx; font-size: 24rpx; color: var(--t-primary-deep); }
 .summary { margin-top: 10rpx; font-size: 24rpx; color: #777064; }
 .ga-note { margin-top: 16rpx; padding: 14rpx 16rpx; border-radius: 14rpx; background: #FFF5D9; color: #83704A; font-size: 23rpx; line-height: 1.5; }
-.ga-note-label { display: block; color: #B57D0A; font-size: 20rpx; margin-bottom: 2rpx; }
+.ga-note-label { display: block; color: var(--t-primary-deep); font-size: 20rpx; margin-bottom: 2rpx; }
 .record-actions { display: flex; align-items: center; margin-top: 18rpx; padding-top: 14rpx; border-top: 1rpx solid #F3EEE2; }
 .action { flex: 1; color: #A59D8C; font-size: 23rpx; text-align: center; }
 .action-active { color: #D36E62; }

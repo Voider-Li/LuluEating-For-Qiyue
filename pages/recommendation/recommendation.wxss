@@ -8,7 +8,7 @@
 }
 
 .hero-sub {
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 10rpx;
   font-size: 26rpx;
 }
@@ -46,5 +46,5 @@
 .summary {
   margin-top: 20rpx;
   font-size: 27rpx;
-  color: #B57D0A;
+  color: var(--t-primary-deep);
 }

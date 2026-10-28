@@ -2,6 +2,7 @@ const foodService = require('../../services/food');
 const agentsService = require('../../services/agents');
 const chatService = require('../../services/chat');
 const backstageService = require('../../services/backstage');
+const appConfig = require('../../services/app-config');
 const app = getApp();
 
 // 桌面上的六个盘子位（百分比，相对 table.png 820×912）
@@ -96,6 +97,8 @@ function thinkingText(agentId) {
 
 Page({
   data: {
+    theme: 'warm',
+    gift: null,
     todayText: '',
     unread: false,
     seats: {
@@ -129,10 +132,35 @@ Page({
   },
 
   onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
     // 人设从数据库读（读不到会退回前端默认），读到之后再打招呼
     this.loadAgents().then(() => { this.greet(); });
     this.refresh();
     this.loadSurprises();
+    this.loadGift();
+  },
+
+  // 餐桌正中间的礼物：由总开关 birthday_mode 决定（也可用 gift_enabled 单独覆盖），图片留空就用 🎁
+  loadGift() {
+    // 用 Promise.resolve() 包一层：即使 load() 同步抛错也能被 catch 接住
+    Promise.resolve()
+      .then(() => appConfig.load())
+      .then((cfg) => {
+        const r = appConfig.resolve(cfg);
+        this.setData({ gift: r.giftOn ? { image: r.giftImage } : null });
+      })
+      .catch((e) => {
+        console.warn('[gift] 读配置失败：', e && e.message);
+        this.setData({ gift: null });
+      });
+  },
+
+  // 点桌上的礼物 → 进剧情页
+  onGiftTap() {
+    wx.navigateTo({
+      url: '/pages/story/story',
+      fail: () => wx.showToast({ title: '打不开，稍后再试', icon: 'none' })
+    });
   },
 
   onHide() {

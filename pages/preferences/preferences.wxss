@@ -6,15 +6,15 @@
 .pill {
   padding: 12rpx 32rpx;
   border-radius: 999rpx;
-  background: #F4F1E9;
-  color: #7A756A;
+  background: var(--t-field);
+  color: var(--t-text-mid);
   font-size: 26rpx;
   margin: 0 16rpx 16rpx 0;
 }
 
 .pill-active {
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
 }
 
 .tag-row {
@@ -25,12 +25,12 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  background: #FFF1CC;
+  background: var(--t-chip);
   border-radius: 999rpx;
   padding: 8rpx 20rpx;
   margin: 0 12rpx 12rpx 0;
   font-size: 25rpx;
-  color: #B57D0A;
+  color: var(--t-primary-deep);
 }
 
 .tag-dislike {
@@ -54,8 +54,8 @@
 
 .tag-add {
   margin-left: 16rpx;
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
   font-size: 26rpx;
   height: 88rpx;
   line-height: 88rpx;

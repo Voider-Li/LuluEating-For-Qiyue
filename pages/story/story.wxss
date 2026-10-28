@@ -1,0 +1,466 @@
+/* ---------- 剧情页：沉浸式深色底（故意不跟主题走，像进到另一个空间） ---------- */
+.story {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #150F0C;
+  color: #F3E9DF;
+}
+
+/* 读信 / 结束页：暖色渐变 + 中间一层柔光，白纸像浮在暖色桌面上 */
+.story-letter {
+  background:
+    radial-gradient(125% 68% at 50% 34%, rgba(255, 218, 170, 0.34) 0%, rgba(255, 218, 170, 0) 66%),
+    linear-gradient(180deg, #4E3D2F 0%, #3A2C23 55%, #281F19 100%);
+}
+
+/* ---------- 背景图 ---------- */
+/* 界面一：宽度铺满屏幕、高度按比例自适应。top 控制上下位置（想再往下就加大这个值） */
+.bg-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 90rpx;
+  animation: fadeIn 0.6s ease both;
+}
+
+.bg-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 上下端虚化：让图片边缘融进背景，不要一条硬边 */
+.bg-fade-top {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 150rpx;
+  pointer-events: none;
+  background: linear-gradient(180deg, #150F0C 0%, rgba(21, 15, 12, 0) 100%);
+}
+
+.bg-fade-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 320rpx;
+  pointer-events: none;
+  background: linear-gradient(0deg, #150F0C 0%, rgba(21, 15, 12, 0.7) 32%, rgba(21, 15, 12, 0) 100%);
+}
+
+/* 底部氛围光：给对话框那一片加点层次，别显得太空 */
+.bottom-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 480rpx;
+  pointer-events: none;
+  background: radial-gradient(90% 100% at 50% 100%, rgba(255, 192, 120, 0.20) 0%, rgba(255, 192, 120, 0.06) 45%, rgba(255, 192, 120, 0) 75%);
+}
+
+/* ---------- 信纸（打开信封之后，左右按钮翻页） ---------- */
+.letter-head {
+  position: absolute;
+  left: 40rpx;
+  right: 32rpx;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.letter-exit {
+  padding: 10rpx 26rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  color: rgba(255, 245, 235, 0.75);
+  background: rgba(26, 18, 14, 0.5);
+  border: 1rpx solid rgba(255, 255, 255, 0.14);
+}
+
+/* 信纸容器：只负责撑出可用高度，里面的图/提示都用绝对定位撑满
+   （不要给子元素写 height:100% —— 父级高度来自 flex，百分比在小程序里常算成 0） */
+.letter-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 信纸：铺满屏幕宽度，高度按图片比例（配 mode="widthFix"）
+   top 控制上下位置：想再往下调就加大这个值 */
+.letter-img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 210rpx;
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  transition: opacity 0.19s ease;
+}
+
+.letter-img-out {
+  opacity: 0;
+}
+
+/* 图缺失 / 加载失败时的提示（别让人对着白屏猜） */
+.letter-missing {
+  position: absolute;
+  left: 28rpx;
+  right: 28rpx;
+  top: 40rpx;
+  bottom: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40rpx;
+  border-radius: 24rpx;
+  border: 2rpx dashed rgba(255, 245, 235, 0.2);
+  text-align: center;
+}
+
+.letter-missing-emoji { font-size: 72rpx; margin-bottom: 16rpx; }
+.letter-missing-text { font-size: 28rpx; color: rgba(255, 245, 235, 0.8); }
+.letter-missing-sub {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  word-break: break-all;
+  color: rgba(255, 245, 235, 0.5);
+}
+
+.letter-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 40rpx calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.page-nav {
+  padding: 16rpx 34rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  color: rgba(255, 245, 235, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1rpx solid rgba(255, 255, 255, 0.16);
+}
+
+.page-nav-off {
+  opacity: 0.32;
+}
+
+.page-nav-next {
+  font-weight: 600;
+  color: #3A2C24;
+  background: linear-gradient(135deg, #FFD9A8 0%, #FFC078 100%);
+  border-color: transparent;
+}
+
+.page-count {
+  font-size: 24rpx;
+  letter-spacing: 2rpx;
+  color: rgba(255, 245, 235, 0.6);
+}
+
+/* ---------- 说话人名字：贴在对话框左上角 ---------- */
+.name-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  /* 中心压在对话框的左上角上 */
+  transform: translate(-14rpx, -50%);
+  padding: 10rpx 30rpx;
+  border-radius: 999rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  white-space: nowrap;
+  color: #2A1D14;
+  background: linear-gradient(135deg, #FFD9A8 0%, #FFC078 100%);
+  box-shadow: 0 8rpx 22rpx rgba(0, 0, 0, 0.36);
+  animation: fadeIn 0.4s ease both;
+}
+
+.dialog-option .name-box {
+  background: linear-gradient(135deg, #FFE0B4 0%, #FFC98A 100%);
+}
+
+/* ---------- 右上角：跳过 ---------- */
+.skip {
+  position: absolute;
+  right: 32rpx;
+  z-index: 20;
+  padding: 10rpx 24rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  color: rgba(255, 245, 235, 0.75);
+  background: rgba(26, 18, 14, 0.5);
+  border: 1rpx solid rgba(255, 255, 255, 0.14);
+}
+
+/* ---------- 底部区域 ---------- */
+.bottom {
+  margin-top: auto;
+  padding: 0 40rpx calc(48rpx + env(safe-area-inset-bottom));
+  z-index: 10;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 12rpx;
+  margin-bottom: 22rpx;
+}
+
+.dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: rgba(255, 245, 235, 0.28);
+  transition: all 0.25s ease;
+}
+
+.dot-on {
+  width: 30rpx;
+  border-radius: 999rpx;
+  background: #FFC078;
+}
+
+/* ---------- 半透明对话框 ---------- */
+.dialog {
+  position: relative;
+  min-height: 230rpx;
+  box-sizing: border-box;
+  /* 上方留出名字框压进来的位置 */
+  padding: 54rpx 40rpx 56rpx;
+  border-radius: 28rpx;
+  background: rgba(24, 17, 13, 0.62);
+  border: 1rpx solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 16rpx 44rpx rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22rpx);
+  -webkit-backdrop-filter: blur(22rpx);
+}
+
+/* 玩家"选项"：暖色高亮，一眼能区分 */
+.dialog-option {
+  background: rgba(255, 190, 110, 0.18);
+  border-color: rgba(255, 190, 110, 0.45);
+}
+
+.dialog-text {
+  font-size: 32rpx;
+  line-height: 1.8;
+  letter-spacing: 0.5rpx;
+  color: #FBF3E8;
+}
+
+.dialog-option .dialog-text {
+  color: #FFE3B8;
+}
+
+.caret {
+  color: #FFC078;
+  animation: blink 0.9s steps(1) infinite;
+}
+
+.dialog-tip {
+  position: absolute;
+  right: 36rpx;
+  bottom: 16rpx;
+  font-size: 22rpx;
+  color: rgba(255, 245, 235, 0.45);
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+/* ---------- 过渡：慢慢变白 ---------- */
+.fade {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 60;
+  background: #FFFFFF;
+  pointer-events: none;
+  animation: fadeIn 1.1s ease forwards;
+}
+
+/* 信纸白幕再慢慢褪掉 */
+.fade-out {
+  animation: fadeOut 0.9s ease forwards;
+}
+
+/* ---------- 加载 / 空状态 / 结束 ---------- */
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 44rpx;
+  text-align: center;
+}
+
+.center-text { font-size: 26rpx; color: rgba(243, 233, 223, 0.6); }
+.center-emoji { font-size: 110rpx; margin-bottom: 20rpx; }
+.center-title { font-size: 34rpx; font-weight: 600; }
+.center-sub { margin-top: 10rpx; font-size: 24rpx; color: rgba(243, 233, 223, 0.55); }
+
+/* ---------- 暗号：粉色发光卡片 ---------- */
+.code-card {
+  width: 100%;
+  margin-top: 46rpx;
+  padding: 34rpx 32rpx;
+  box-sizing: border-box;
+  border-radius: 26rpx;
+  background: linear-gradient(135deg, #FFE7F1 0%, #FFD2E4 100%);
+  border: 2rpx solid rgba(255, 140, 185, 0.95);
+  animation: codeGlow 2.6s ease-in-out infinite;
+}
+
+.code-line {
+  font-size: 40rpx;
+  font-weight: 700;
+  line-height: 1.7;
+  letter-spacing: 1rpx;
+  text-align: center;
+  color: #B23A6E;
+}
+
+.code-blank {
+  color: #FF6FA8;
+}
+
+/* 同一行里的括号说明：小一号、不加粗 */
+.code-hint {
+  font-size: 28rpx;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #C97BA0;
+}
+
+@keyframes codeGlow {
+  0%, 100% {
+    box-shadow: 0 0 28rpx rgba(255, 122, 172, 0.5), 0 12rpx 28rpx rgba(0, 0, 0, 0.28);
+  }
+  50% {
+    box-shadow: 0 0 54rpx rgba(255, 122, 172, 0.85), 0 12rpx 28rpx rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  margin-top: 48rpx;
+  padding: 0 48rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+  color: #3A2C24;
+  background: linear-gradient(135deg, #FFD9A8 0%, #FFC078 100%);
+  box-shadow: 0 10rpx 26rpx rgba(0, 0, 0, 0.3);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: rgba(255, 245, 235, 0.8);
+  border: 1rpx solid rgba(255, 245, 235, 0.3);
+  box-shadow: none;
+}
+
+/* 结尾的两个按钮：纵向排列、加宽 */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 22rpx;
+  width: 100%;
+  margin-top: 56rpx;
+}
+
+.actions .btn {
+  width: 100%;
+  margin-top: 0;
+  padding: 0;
+}
+
+/* ---------- 那封信 ---------- */
+.letter-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 120rpx 40rpx 0;
+  box-sizing: border-box;
+}
+
+.letter {
+  padding: 52rpx 44rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(180deg, #FFFBF3 0%, #FBF2E4 100%);
+  box-shadow: 0 20rpx 50rpx rgba(0, 0, 0, 0.32);
+  animation: fadeUp 0.5s ease both;
+}
+
+.letter-title {
+  margin-bottom: 36rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #4A3A2C;
+  text-align: center;
+}
+
+.letter-body {
+  display: block;
+  white-space: pre-wrap;
+  font-size: 30rpx;
+  line-height: 2;
+  letter-spacing: 0.5rpx;
+  color: #5A4A3A;
+}
+
+.letter-sign {
+  margin-top: 40rpx;
+  font-size: 28rpx;
+  color: #8A7460;
+  text-align: right;
+}
+
+.letter-scroll .actions {
+  padding-bottom: calc(60rpx + env(safe-area-inset-bottom));
+}
+
+/* ---------- 动画 ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20rpx); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}

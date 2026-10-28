@@ -1,6 +1,9 @@
+/* 主题变量统一放在 styles/theme.wxss（唯一来源，TabBar 也 import 它） */
+@import "styles/theme.wxss";
+
 page {
-  background: #FFF6DE;
-  color: #3F3D38;
+  background: var(--t-bg);
+  color: var(--t-text);
   font-size: 28rpx;
   line-height: 1.6;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
@@ -10,10 +13,11 @@ page {
   padding: 32rpx 32rpx 64rpx;
   min-height: 100vh;
   box-sizing: border-box;
+  background: var(--t-bg);
 }
 
 .card {
-  background: #FFFDF7;
+  background: var(--t-card);
   border-radius: 24rpx;
   padding: 32rpx;
   margin-bottom: 24rpx;
@@ -24,7 +28,7 @@ page {
   font-size: 30rpx;
   font-weight: 600;
   margin-bottom: 24rpx;
-  color: #3F3D38;
+  color: var(--t-text);
 }
 
 .section-title {
@@ -38,7 +42,7 @@ page {
 
 .section-sub {
   font-size: 24rpx;
-  color: #9B968A;
+  color: var(--t-text-sub);
   font-weight: 400;
 }
 
@@ -58,8 +62,8 @@ page {
 }
 
 .btn-primary {
-  background: #FFB627;
-  color: #5C4305;
+  background: var(--t-primary);
+  color: var(--t-primary-ink);
 }
 
 .btn-primary[disabled] {
@@ -74,12 +78,12 @@ page {
 }
 
 .btn-ghost {
-  background: #FFF1CC;
-  color: #B57D0A;
+  background: var(--t-chip);
+  color: var(--t-primary-deep);
 }
 
 .input {
-  background: #F4F1E9;
+  background: var(--t-field);
   border-radius: 16rpx;
   height: 88rpx;
   line-height: 88rpx;
@@ -91,7 +95,7 @@ page {
 }
 
 .muted {
-  color: #9B968A;
+  color: var(--t-text-sub);
   font-size: 24rpx;
 }
 
@@ -111,7 +115,7 @@ page {
 }
 
 .empty-sub {
-  color: #9B968A;
+  color: var(--t-text-sub);
   margin-top: 8rpx;
 }
 
@@ -136,5 +140,5 @@ page {
   height: 360rpx;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 246, 222, 0) 0%, rgba(255, 182, 39, 0.16) 70%, rgba(255, 182, 39, 0.26) 100%);
+  background: linear-gradient(180deg, rgba(255, 246, 222, 0) 0%, var(--t-glow-a) 70%, var(--t-glow-b) 100%);
 }

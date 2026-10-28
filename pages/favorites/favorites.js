@@ -1,9 +1,11 @@
 const favoritesService = require('../../services/favorites');
 
 Page({
-  data: { favorites: [], total: 0, loading: true },
+  data: {
+    theme: 'warm', favorites: [], total: 0, loading: true },
 
-  onShow() { this.load(); },
+  onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' }); this.load(); },
 
   async load() {
     this.setData({ loading: true });

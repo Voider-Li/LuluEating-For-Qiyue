@@ -1,0 +1,111 @@
+<view class="story {{stage === 'pages' || stage === 'end' ? 'story-letter' : ''}}" bindtap="onTap">
+
+  <!-- 正在打开 -->
+  <view class="center" wx:if="{{loading}}">
+    <view class="center-text">正在打开礼物…</view>
+  </view>
+
+  <!-- 还没有剧情 -->
+  <view class="center" wx:elif="{{!story}}">
+    <view class="center-emoji">🎁</view>
+    <view class="center-title">礼物还在准备中</view>
+    <view class="center-sub">等准备好了再来看吧</view>
+    <view class="btn" catchtap="onBackHome">回到餐桌</view>
+  </view>
+
+  <block wx:else>
+
+    <!-- ========== 界面一：一幕幕对话 ========== -->
+    <block wx:if="{{stage === 'dialogue'}}">
+      <view class="bg-wrap" wx:if="{{scene.image}}">
+        <image class="bg-img" src="{{scene.image}}" mode="widthFix" />
+        <view class="bg-fade-top"></view>
+        <view class="bg-fade-bottom"></view>
+      </view>
+      <view class="bottom-glow"></view>
+
+      <view class="skip" style="top: {{topPadding}}px;" catchtap="onSkip">跳过</view>
+
+      <view class="bottom">
+        <view class="dots">
+          <view class="dot {{sceneIndex === item ? 'dot-on' : ''}}" wx:for="{{dots}}" wx:key="*this"></view>
+        </view>
+
+        <!-- 底部：半透明对话框（说话人名字贴在它的左上角） -->
+        <view class="dialog {{line.option ? 'dialog-option' : ''}}">
+          <view class="name-box" wx:if="{{line.name}}">{{line.name}}</view>
+          <view class="dialog-text"><text>{{typed}}</text><text class="caret" wx:if="{{typing}}">▍</text></view>
+          <view class="dialog-tip" wx:if="{{!typing}}">轻触继续</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- ========== 过渡：慢慢变白 ========== -->
+    <view class="fade" wx:elif="{{stage === 'fade'}}"></view>
+
+    <!-- ========== 打开信封之后：信纸，左右按钮翻页（淡入淡出） ========== -->
+    <block wx:elif="{{stage === 'pages'}}">
+      <view class="fade fade-out"></view>
+
+      <view class="letter-head" style="top: {{topPadding}}px;">
+        <view class="letter-exit" catchtap="onDone">✕</view>
+      </view>
+
+      <view class="letter-stage">
+        <image
+          wx:if="{{currentImage && !imgFailed}}"
+          class="letter-img {{fading ? 'letter-img-out' : ''}}"
+          src="{{currentImage}}"
+          mode="widthFix"
+          binderror="onImgError"
+        />
+        <view wx:else class="letter-missing">
+          <view class="letter-missing-emoji">📄</view>
+          <view class="letter-missing-text">{{imgFailed ? '图片加载失败' : '这一页没有图片'}}</view>
+          <view class="letter-missing-sub">image 字段：{{currentImage ? currentImage : '（空）'}}</view>
+        </view>
+      </view>
+
+      <view class="letter-foot">
+        <view class="page-nav {{pageIndex === 0 ? 'page-nav-off' : ''}}" catchtap="onPrevPage">‹ 上一页</view>
+        <view class="page-count">{{pageIndex + 1}} / {{story.pages.length}}</view>
+        <view class="page-nav page-nav-next" catchtap="onNextPage">{{pageIndex === story.pages.length - 1 ? '看完了' : '下一页 ›'}}</view>
+      </view>
+    </block>
+
+    <!-- ========== 那封信 ========== -->
+    <block wx:elif="{{stage === 'letter'}}">
+      <scroll-view class="letter-scroll" scroll-y>
+        <view class="letter">
+          <view class="letter-title">{{story.letter.title || '写给你的一封信'}}</view>
+          <text class="letter-body">{{story.letter.text}}</text>
+          <view class="letter-sign" wx:if="{{story.letter.sign}}">{{story.letter.sign}}</view>
+        </view>
+        <view class="actions">
+          <view class="btn btn-ghost" catchtap="onReplay">再看一遍</view>
+          <view class="btn" catchtap="onDone">收好这封信</view>
+        </view>
+      </scroll-view>
+    </block>
+
+    <!-- ========== 结束 ========== -->
+    <view class="center" wx:elif="{{stage === 'end'}}">
+      <view class="center-emoji">💛</view>
+      <view class="center-title">收好啦</view>
+      <view class="center-sub">这份礼物一直在这里</view>
+
+      <!-- 暗号 -->
+      <view class="code-card">
+        <view class="code-line" style="text-align: left;">暗号：</view>
+        <view class="code-line"><text class="code-blank">__________</text>，处处胜人间。</view>
+        <text class="code-hint">（密码为每个字首字母）</text>
+      </view>
+
+      <view class="actions">
+        <view class="btn btn-ghost" catchtap="onReplay">再看一遍</view>
+        <view class="btn" catchtap="onDone">回到餐桌</view>
+      </view>
+    </view>
+
+  </block>
+</view>

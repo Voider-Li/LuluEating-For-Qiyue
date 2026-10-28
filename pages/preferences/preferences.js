@@ -2,6 +2,7 @@ const preferenceService = require('../../services/preferences');
 
 Page({
   data: {
+    theme: 'warm',
     tasteOptions: ['清淡', '正常', '偏辣'],
     cuisineOptions: ['中餐', '日式', '韩式', '西餐', '其他'],
     taste: '清淡',
@@ -11,6 +12,10 @@ Page({
     likedInput: '',
     dislikedInput: '',
     saving: false
+  },
+
+  onShow() {
+    this.setData({ theme: getApp().globalData.theme || 'warm' });
   },
 
   async onLoad() {

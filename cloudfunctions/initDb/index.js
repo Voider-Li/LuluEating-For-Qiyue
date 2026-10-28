@@ -28,7 +28,125 @@ const COLLECTIONS = [
   // 辅助
   'backstage',
   'meal_recommendations',
-  'ai_call_logs'
+  'ai_call_logs',
+  // 键值对配置（主题开关、彩蛋开关等都放这里）
+  'app_config',
+  // 剧情（礼物点进去的视觉小说）
+  'stories'
+];
+
+// 键值对配置的初始值。平时改这些值就行，不用发版。
+//
+// ★ 最常用的只有一个：birthday_mode
+//     true  = 生日模式（粉色主题 + 首页横幅 + 餐桌礼物，一起开）
+//     false = 平时（暖黄主题，横幅和礼物都关）
+//   下面 theme / banner_enabled / gift_enabled 留空 = 跟随总开关；
+//   填了就以填的为准（想单独调某一项时才用得上）。
+const APP_CONFIG = [
+  {
+    _id: 'birthday_mode',
+    key: 'birthday_mode',
+    value: 'false',
+    remark: '★总开关：true=生日模式（粉色+横幅+礼物全开）；false=平时（暖黄，全关）'
+  },
+  {
+    _id: 'theme',
+    key: 'theme',
+    value: '',
+    remark: '主题覆盖：留空跟随总开关；也可填 warm / pink 强制指定'
+  },
+  {
+    _id: 'banner_enabled',
+    key: 'banner_enabled',
+    value: '',
+    remark: '横幅覆盖：留空跟随总开关；填 true / false 可单独控制'
+  },
+  {
+    _id: 'banner_text',
+    key: 'banner_text',
+    value: '🎉生日快乐！🎉',
+    remark: '首页横幅文案，清空则不显示横幅'
+  },
+  {
+    _id: 'banner_image',
+    key: 'banner_image',
+    value: '',
+    remark: '首页横幅配图（云存储 fileID，可留空）'
+  },
+  {
+    _id: 'gift_enabled',
+    key: 'gift_enabled',
+    value: '',
+    remark: '礼物覆盖：留空跟随总开关；填 true / false 可单独控制'
+  },
+  {
+    _id: 'gift_image',
+    key: 'gift_image',
+    value: '',
+    remark: '礼物图（云存储 fileID，留空则用 🎁）'
+  },
+  {
+    _id: 'story_id',
+    key: 'story_id',
+    value: '',
+    remark: '剧情：留空=取 stories 里第一条 enabled；填了就指定那条 _id'
+  }
+];
+
+// 剧情（餐桌上的礼物点进去）。台词照《剧本.md》来，改台词不用发版。
+// 图片放在 assets/story/ 里，直接写本地路径即可（也能填云存储 fileID）。
+//   option: true = 玩家"选项"，对话框会变成暖色高亮
+//   name 留空 = 旁白，左上角不显示名字框
+const STORIES = [
+  {
+    _id: 'birthday-2026',
+    enabled: true,
+    title: '给祈栎',
+    scenes: [
+      {
+        image: '/assets/story/1.jpg',
+        lines: [
+          { name: '', text: '三个小家伙凑在一起，像在藏什么东西，小声嘀咕着——', option: false },
+          { name: '三个小家伙', text: '今天是祈栎姐姐生日，清辉让咱们把他的小礼物藏好，咱们可不能掉链子！', option: false },
+          { name: '祈栎', text: '嘿！你们三个悄咪咪地干什么呢？', option: true }
+        ]
+      },
+      {
+        image: '/assets/story/2.jpg',
+        lines: [
+          { name: '', text: '三个小家伙被吓了一跳，转过来，紧张地说——', option: false },
+          { name: '三个小家伙', text: '祈栎姐姐！你怎么这会儿……生……生日快乐！！！', option: false },
+          { name: '祈栎', text: '谢谢你们！', option: true },
+          { name: '祈栎', text: '我都听到啦，把小礼物拿出来吧！', option: true }
+        ]
+      },
+      {
+        image: '/assets/story/3.jpg',
+        lines: [
+          { name: '', text: '噜妹拿出礼盒。', option: false }
+        ]
+      },
+      {
+        image: '/assets/story/4.jpg',
+        lines: [
+          { name: '', text: '噜妹打开礼盒，里面是一封信。', option: false }
+        ]
+      }
+    ],
+    // 打开信封之后：8 页信纸，左右滑动翻页
+    pages: [
+      { image: '/assets/story/letter/1.jpg', text: '' },
+      { image: '/assets/story/letter/2.jpg', text: '' },
+      { image: '/assets/story/letter/3.jpg', text: '' },
+      { image: '/assets/story/letter/4.jpg', text: '' },
+      { image: '/assets/story/letter/5.jpg', text: '' },
+      { image: '/assets/story/letter/6.jpg', text: '' },
+      { image: '/assets/story/letter/7.jpg', text: '' },
+      { image: '/assets/story/letter/8.jpg', text: '' }
+    ],
+    // 可选：最后的一封信（纯文字）。信已经做成图片放进 pages 了，这里留 null 即可。
+    letter: null
+  }
 ];
 
 // 三个智能体的人设。system_prompt 是核心 —— 改它不用重新发版小程序。
@@ -104,6 +222,10 @@ const AGENTS = [
 
 exports.main = async (event) => {
   const force = !!(event && event.force);
+  // 只刷新键值对配置（会把 birthday_mode 等刷回种子值！不动智能体人设）：{"forceConfig": true}
+  const forceConfig = !!(event && event.forceConfig) || force;
+  // 只刷新剧情（不动配置、不动人设）：{"forceStory": true}  ← 平时刷新剧情用这个
+  const forceStory = !!(event && event.forceStory) || force;
 
   const created = [];
   const existed = [];
@@ -132,12 +254,40 @@ exports.main = async (event) => {
     seeded.push('chat_agents/' + id + (already ? '（已刷新）' : ''));
   }
 
+  // 键值对配置：同样"已存在就跳过"，避免把你改过的开关刷回默认
+  for (const item of APP_CONFIG) {
+    const id = item._id;
+    const already = await docExists('app_config', id);
+    if (already && !forceConfig) {
+      seeded.push('app_config/' + id + '（已存在，跳过；要刷回默认请传 {"forceConfig":true}）');
+      continue;
+    }
+    const data = Object.assign({}, item, { updated_at: Date.now() });
+    delete data._id;
+    await db.collection('app_config').doc(id).set({ data: data });
+    seeded.push('app_config/' + id + (already ? '（已刷新）' : ''));
+  }
+
+  // 剧情：跟配置一样，已存在就跳过（你改过台词不会被冲掉）
+  for (const story of STORIES) {
+    const id = story._id;
+    const already = await docExists('stories', id);
+    if (already && !forceStory) {
+      seeded.push('stories/' + id + '（已存在，跳过；要刷回默认请传 {"forceStory":true}）');
+      continue;
+    }
+    const data = Object.assign({}, story, { updated_at: Date.now() });
+    delete data._id;
+    await db.collection('stories').doc(id).set({ data: data });
+    seeded.push('stories/' + id + (already ? '（已刷新）' : ''));
+  }
+
   return {
     ok: true,
     created: created,
     existed: existed,
     seeded: seeded,
-    tip: '接下来：① 按《云开发数据库设计.md》§4 配安全规则；② 给 ai 云函数配环境变量 KEY_DEEPSEEK 并把超时时间调到 60 秒。'
+    tip: '日常改主题/横幅/剧情台词：直接改数据库，重进页面即生效。要刷回默认才需要传参：{"forceStory":true} 只刷剧情（推荐）；{"forceConfig":true} 只刷配置（注意会把 birthday_mode 重置为 false）；{"force":true} 全部刷（含智能体人设，慎用）。另外记得给 app_config、stories 配安全规则。'
   };
 };
 
