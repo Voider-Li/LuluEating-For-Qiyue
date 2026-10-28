@@ -1,4 +1,7 @@
 <view class="tab-bar theme-{{theme}}">
+  <!-- 玻璃层：负责高光、流动反光，overflow 裁出圆角 -->
+  <view class="tab-glass"></view>
+
   <view class="tab-group">
     <view class="tab-indicator tab-indicator-{{selected}}"></view>
     <view
@@ -13,6 +16,7 @@
       <text class="tab-text">{{item.text}}</text>
     </view>
   </view>
+
   <view class="tab-side">
     <view class="chat-btn" hover-class="chat-btn-hover" bindtap="goChat">
       <image class="chat-icon" src="/assets/tabbar/chat.png" />
