@@ -3,53 +3,64 @@
 @import "../styles/theme.wxss";
 
 /* ============================================================
-   液态玻璃 Dock（Liquid Glass）
-   小程序里没有 SVG 位移滤镜，所以"折射"靠这几层叠出来：
-     1. 极淡的玻璃体：透明度压到 0.1~0.4，让底下的内容透上来
-     2. backdrop-filter: blur + saturate + brightness（糊开并提亮）
-     3. 四边内发光：上缘最亮、下缘反光，做出"玻璃厚度"
-     4. 顶部弧形高光 + 缓慢横穿的液态反光（.tab-glass 里跑）
-     5. 外投影把整块玻璃托起来
-   任何一层不支持（老安卓没 backdrop-filter），剩下的半透明底也不至于糊成一片。
+   液态玻璃 Dock
+   ------------------------------------------------------------
+   结构（各层只管一件事，互不打架）：
+     .tab-bar    容器：玻璃体底色 + 边缘光 + 投影
+     .tab-glass  纯光效层：顶部弧光、缓慢流动的反光
+     .tab-group  导航区：选中底座 + 3 个 tab
+     .tab-side   右侧嘎哒入口
+   ------------------------------------------------------------
+   微信小程序没有 SVG 位移滤镜，做不出真实折射，这里用四件事逼近：
+     1. 低不透明度玻璃体（0.12~0.30），让页面底色真正透上来
+     2. backdrop-filter: blur(24px) + saturate(150%) + brightness(1.03)
+     3. 边缘光：上缘细高光、左右边光、下缘微弱暗部（玻璃厚度）
+     4. 内部光学层次：左上角柔光 + 右下角暖色透光 + 缓慢流动的反光
+   所有效果都克制：没有大面积纯白、没有彩虹色、没有强发光。
    ============================================================ */
 
 .tab-bar {
   position: fixed;
-  left: 24rpx;
-  right: 24rpx;
-  bottom: calc(constant(safe-area-inset-bottom) + 20rpx);
-  bottom: calc(env(safe-area-inset-bottom) + 20rpx);
+  left: 28rpx;
+  right: 28rpx;
+  bottom: calc(constant(safe-area-inset-bottom) + 24rpx);
+  bottom: calc(env(safe-area-inset-bottom) + 24rpx);
   z-index: 999;
   display: flex;
   align-items: center;
-  height: 128rpx;
+  height: 120rpx;
   padding: 10rpx;
   box-sizing: border-box;
-  border-radius: 46rpx;
+  border-radius: 60rpx;
+  /* 描边是"淡光边"，不是纯白框 */
   border: 1rpx solid var(--t-glass-edge);
-  background: linear-gradient(
-    172deg,
-    var(--t-glass-top) 0%,
-    var(--t-glass-mid) 44%,
-    var(--t-glass-bot) 100%
-  );
-  -webkit-backdrop-filter: blur(22px) saturate(190%) brightness(1.06);
-  backdrop-filter: blur(22px) saturate(190%) brightness(1.06);
+  /* 三层底：左上柔光 / 右下暖光 / 竖向明暗渐变 */
+  background:
+    radial-gradient(78% 120% at 12% -20%, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 64%),
+    radial-gradient(70% 130% at 104% 116%, var(--t-glass-warm) 0%, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(
+      172deg,
+      var(--t-glass-top) 0%,
+      var(--t-glass-mid) 46%,
+      var(--t-glass-bot) 100%
+    );
+  -webkit-backdrop-filter: blur(24px) saturate(150%) brightness(1.03);
+  backdrop-filter: blur(24px) saturate(150%) brightness(1.03);
   box-shadow:
-    /* 玻璃厚度：上缘亮、下缘反光、左右各一道边光 */
-    inset 0 2rpx 0 rgba(255, 255, 255, 0.98),
-    inset 0 -2rpx 1rpx rgba(255, 255, 255, 0.55),
-    inset 2rpx 0 0 rgba(255, 255, 255, 0.5),
-    inset -2rpx 0 0 rgba(255, 255, 255, 0.5),
-    /* 顶部弧面 + 底部透上来的暖色 */
-    inset 0 26rpx 28rpx -24rpx rgba(255, 255, 255, 0.9),
-    inset 0 -30rpx 34rpx -28rpx var(--t-glass-warm),
-    /* 浮起来 */
-    0 20rpx 40rpx -14rpx var(--t-glass-shadow-1),
-    0 3rpx 10rpx var(--t-glass-shadow-2);
+    /* 上缘一道细高光 */
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.92),
+    /* 左右边光 */
+    inset 2rpx 0 0 rgba(255, 255, 255, 0.34),
+    inset -2rpx 0 0 rgba(255, 255, 255, 0.34),
+    /* 下缘：先一道反光，再一层极淡暗部，做出厚度 */
+    inset 0 -1rpx 1rpx rgba(255, 255, 255, 0.42),
+    inset 0 -16rpx 20rpx -16rpx var(--t-glass-shade),
+    /* 悬浮投影：近处实、远处散 */
+    0 16rpx 36rpx -12rpx var(--t-glass-shadow-1),
+    0 4rpx 12rpx var(--t-glass-shadow-2);
 }
 
-/* ---------- 玻璃层：只负责光，不挡点击 ---------- */
+/* ---------- 光效层：只负责光，不挡点击 ---------- */
 .tab-glass {
   position: absolute;
   left: 0;
@@ -62,57 +73,63 @@
   pointer-events: none;
 }
 
-/* 顶部弧形高光：像液面被压出来的那道亮边 */
+/* 顶部弧面高光：模拟玻璃被环境光压出来的亮边 */
 .tab-glass::before {
   content: '';
   position: absolute;
-  left: 2rpx;
-  right: 2rpx;
+  left: 3rpx;
+  right: 3rpx;
   top: 0;
-  height: 58rpx;
-  border-radius: 44rpx 44rpx 72% 72%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0) 82%);
+  height: 44rpx;
+  border-radius: 56rpx 56rpx 70% 70%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 255, 255, 0.12) 44%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
-/* 液态反光：一条斜向的高光带，每隔几秒慢慢淌过去 */
+/* 缓慢流动的一道反光：12s 一轮，最大不透明度只有 0.4，够"液态"但不抢戏
+   用渐变自身做柔边，不用 filter: blur()，省性能 */
 .tab-glass::after {
   content: '';
   position: absolute;
-  top: -70%;
-  bottom: -70%;
-  left: -42%;
-  width: 54%;
+  top: -60%;
+  bottom: -60%;
+  left: -46%;
+  width: 46%;
   background: linear-gradient(
     100deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.5) 42%,
-    rgba(255, 255, 255, 0.86) 50%,
-    rgba(255, 255, 255, 0.5) 58%,
+    rgba(255, 255, 255, 0.22) 34%,
+    rgba(255, 255, 255, 0.40) 50%,
+    rgba(255, 255, 255, 0.22) 66%,
     rgba(255, 255, 255, 0) 100%
   );
-  filter: blur(10rpx);
   transform: rotate(6deg) translateX(-40%);
-  animation: glassFlow 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  will-change: transform, opacity;
+  animation: glassFlow 12s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 @keyframes glassFlow {
-  0%, 6% {
+  0%, 8% {
     transform: rotate(6deg) translateX(-40%);
     opacity: 0;
   }
-  16% {
-    opacity: 0.85;
+  18% {
+    opacity: 0.9;
   }
-  52% {
-    opacity: 0.5;
+  54% {
+    opacity: 0.45;
   }
-  68%, 100% {
-    transform: rotate(6deg) translateX(300%);
+  72%, 100% {
+    transform: rotate(6deg) translateX(320%);
     opacity: 0;
   }
 }
 
-/* ---------- 左侧三个 tab ---------- */
+/* ---------- 左侧导航区 ---------- */
 .tab-group {
   position: relative;
   z-index: 1;
@@ -121,50 +138,42 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: 8rpx;
-  border-radius: 38rpx;
-  border: 1rpx solid var(--t-glass-inner);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.06));
-  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.5);
+  padding: 6rpx;
+  border-radius: 50rpx;
+  /* 导航区不再套一层"卡片"，整块 Dock 是一块完整的玻璃 */
+  background: transparent;
 }
 
-/* 液态药丸：宽度 = 单个 tab，位移 = n 个自身宽度；带回弹，像水滴被推过去 */
+/* 选中底座：半透明玻璃胶囊，不是实心白块
+   宽度 = 单个 tab，位移 = n 个自身宽度 */
 .tab-indicator {
   position: absolute;
-  top: 8rpx;
-  bottom: 8rpx;
-  left: 8rpx;
-  width: calc((100% - 16rpx) / 3);
-  border-radius: 30rpx;
-  background: radial-gradient(
-    130% 90% at 50% 0%,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(255, 255, 255, 0.74) 46%,
-    rgba(255, 255, 255, 0.56) 100%
-  );
+  top: 6rpx;
+  bottom: 6rpx;
+  left: 6rpx;
+  width: calc((100% - 12rpx) / 3);
+  border-radius: 44rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.7);
+  background:
+    radial-gradient(120% 100% at 50% -10%, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.30) 62%, rgba(255, 255, 255, 0.24) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.12));
+  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  backdrop-filter: blur(6px) saturate(140%);
   box-shadow:
-    inset 0 2rpx 0 rgba(255, 255, 255, 1),
-    inset 0 -10rpx 14rpx -8rpx rgba(255, 255, 255, 0.8),
-    inset 0 0 0 1rpx rgba(255, 255, 255, 0.65),
-    0 8rpx 16rpx -6rpx var(--t-glass-shadow-2);
-  transition: transform 0.52s cubic-bezier(0.34, 1.26, 0.64, 1);
-}
-
-/* 药丸左上角的一点镜面高光 */
-.tab-indicator::after {
-  content: '';
-  position: absolute;
-  left: 22%;
-  top: 12%;
-  width: 30rpx;
-  height: 12rpx;
-  border-radius: 50%;
-  background: radial-gradient(rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0));
-  filter: blur(2rpx);
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.96),
+    inset 0 -10rpx 14rpx -10rpx rgba(255, 255, 255, 0.7),
+    0 6rpx 14rpx -8rpx var(--t-glass-shadow-2);
+  /* 缓入缓出、无回弹：克制，不抖 */
+  transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .tab-indicator-0 {
   transform: translateX(0);
+}
+
+/* 首屏直接落位，不播滑动动画 */
+.tab-indicator-static {
+  transition: none;
 }
 
 .tab-indicator-1 {
@@ -184,27 +193,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 30rpx;
-  transition: transform 0.18s ease;
+  border-radius: 44rpx;
+  transition: transform 0.16s ease, opacity 0.16s ease;
 }
 
-.tab-item:active {
-  transform: scale(0.95);
+/* 按压反馈走 hover-class，比 :active 在安卓上稳 */
+.tab-item-hover {
+  transform: scale(0.96);
+  opacity: 0.86;
 }
 
 .tab-icon {
-  width: 46rpx;
-  height: 46rpx;
-  transition: transform 0.28s cubic-bezier(0.34, 1.26, 0.64, 1);
+  width: 44rpx;
+  height: 44rpx;
+  opacity: 0.82;
+  transition: transform 0.26s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s ease;
 }
 
 .tab-text {
   margin-top: 4rpx;
   font-size: 20rpx;
   line-height: 1;
-  letter-spacing: 0.5rpx;
+  letter-spacing: 0.4rpx;
   color: var(--t-text-sub);
   transition: color 0.2s ease;
+}
+
+.tab-item-active .tab-icon {
+  opacity: 1;
+  transform: scale(1.06);
 }
 
 .tab-item-active .tab-text {
@@ -212,16 +229,12 @@
   font-weight: 600;
 }
 
-.tab-item-active .tab-icon {
-  transform: translateY(-2rpx) scale(1.08);
-}
-
 /* ---------- 右侧：嘎哒（AI 聊天） ---------- */
 .tab-side {
   position: relative;
   z-index: 1;
   flex-shrink: 0;
-  margin-left: 10rpx;
+  margin-left: 8rpx;
   padding-right: 2rpx;
   display: flex;
   align-items: center;
@@ -230,69 +243,50 @@
 
 .chat-btn {
   position: relative;
-  width: 104rpx;
-  height: 104rpx;
+  width: 96rpx;
+  height: 96rpx;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, var(--t-grad-4) 0%, var(--t-primary) 55%, var(--t-grad-5) 100%);
+  background: linear-gradient(160deg, var(--t-grad-4) 0%, var(--t-primary) 58%, var(--t-grad-5) 100%);
   box-shadow:
-    0 0 16rpx var(--t-btn-glow),
-    0 8rpx 18rpx var(--t-glass-shadow-2),
-    inset 0 2rpx 0 rgba(255, 255, 255, 0.75),
-    inset 0 -8rpx 12rpx -8rpx rgba(255, 255, 255, 0.5);
-  animation: chatGlow 2.8s ease-in-out infinite;
+    0 6rpx 14rpx -6rpx var(--t-btn-glow),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.7),
+    inset 0 -8rpx 12rpx -8rpx rgba(255, 255, 255, 0.42);
   transition: transform 0.16s ease;
 }
 
-/* 球面上的镜面弧 */
+/* 球面镜面弧：让圆球也是"玻璃球"，不是塑料球 */
 .chat-btn::after {
   content: '';
   position: absolute;
-  left: 12rpx;
-  right: 12rpx;
-  top: 6rpx;
-  height: 40rpx;
+  left: 11rpx;
+  right: 11rpx;
+  top: 5rpx;
+  height: 36rpx;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0));
   pointer-events: none;
 }
 
-@keyframes chatGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 12rpx var(--t-btn-glow),
-      0 8rpx 16rpx var(--t-glass-shadow-2),
-      inset 0 2rpx 0 rgba(255, 255, 255, 0.7),
-      inset 0 -8rpx 12rpx -8rpx rgba(255, 255, 255, 0.5);
-  }
-  50% {
-    box-shadow:
-      0 0 30rpx var(--t-btn-glow),
-      0 12rpx 24rpx var(--t-glass-shadow-1),
-      inset 0 2rpx 0 rgba(255, 255, 255, 0.85),
-      inset 0 -8rpx 12rpx -8rpx rgba(255, 255, 255, 0.5);
-  }
-}
-
 .chat-btn-hover {
-  transform: scale(0.94);
+  transform: scale(0.95);
 }
 
 .chat-icon {
   position: relative;
   z-index: 1;
-  width: 40rpx;
-  height: 40rpx;
+  width: 38rpx;
+  height: 38rpx;
 }
 
 .chat-label {
   position: relative;
   z-index: 1;
-  margin-top: 2rpx;
-  font-size: 18rpx;
+  margin-top: 1rpx;
+  font-size: 17rpx;
   line-height: 1.1;
   color: var(--t-primary-ink);
   font-weight: 600;

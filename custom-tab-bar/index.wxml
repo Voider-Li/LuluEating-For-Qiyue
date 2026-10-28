@@ -1,13 +1,15 @@
 <view class="tab-bar theme-{{theme}}">
-  <!-- 玻璃层：负责高光、流动反光，overflow 裁出圆角 -->
+  <!-- 玻璃层：顶部弧光 + 缓慢流动的反光，overflow 裁出胶囊圆角 -->
   <view class="tab-glass"></view>
 
   <view class="tab-group">
-    <view class="tab-indicator tab-indicator-{{selected}}"></view>
+    <view class="tab-indicator tab-indicator-{{selected}} {{animate ? '' : 'tab-indicator-static'}}"></view>
     <view
       wx:for="{{list}}"
       wx:key="pagePath"
       class="tab-item {{selected === index ? 'tab-item-active' : ''}}"
+      hover-class="tab-item-hover"
+      hover-stay-time="80"
       data-path="{{item.pagePath}}"
       data-index="{{index}}"
       bindtap="onTap"
@@ -18,7 +20,7 @@
   </view>
 
   <view class="tab-side">
-    <view class="chat-btn" hover-class="chat-btn-hover" bindtap="goChat">
+    <view class="chat-btn" hover-class="chat-btn-hover" hover-stay-time="80" bindtap="goChat">
       <image class="chat-icon" src="/assets/tabbar/chat.png" />
       <text class="chat-label">嘎哒</text>
     </view>

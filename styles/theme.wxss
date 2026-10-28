@@ -39,19 +39,20 @@ page,
   --t-grad-4: #FFC94F;
   --t-grad-5: #F5A312;
 
-  --t-glow-a: rgba(255, 182, 39, 0.16);
-  --t-glow-b: rgba(255, 182, 39, 0.26);
+  /* 页面底部环境光：只做很淡的一层，别把 Dock 底下的颜色染黄 */
+  --t-glow-a: rgba(255, 182, 39, 0.09);
+  --t-glow-b: rgba(255, 182, 39, 0.14);
   --t-btn-glow: rgba(245, 163, 18, 0.5);
 
   /* 液态玻璃 Dock：玻璃体压得很淡，靠 blur + 边光撑起来 */
-  --t-glass-top: rgba(255, 255, 255, 0.42);
-  --t-glass-mid: rgba(255, 255, 255, 0.14);
-  --t-glass-bot: rgba(255, 247, 232, 0.26);
-  --t-glass-edge: rgba(255, 255, 255, 0.62);
-  --t-glass-inner: rgba(255, 255, 255, 0.38);
-  --t-glass-warm: rgba(255, 198, 100, 0.34);
-  --t-glass-shadow-1: rgba(94, 72, 26, 0.30);
-  --t-glass-shadow-2: rgba(94, 72, 26, 0.10);
+  --t-glass-top: rgba(255, 255, 255, 0.30);
+  --t-glass-mid: rgba(255, 255, 255, 0.12);
+  --t-glass-bot: rgba(255, 249, 238, 0.22);
+  --t-glass-edge: rgba(255, 255, 255, 0.52);
+  --t-glass-warm: rgba(255, 205, 120, 0.16);
+  --t-glass-shade: rgba(126, 98, 46, 0.10);
+  --t-glass-shadow-1: rgba(94, 72, 26, 0.26);
+  --t-glass-shadow-2: rgba(94, 72, 26, 0.09);
   --t-glass-tint: rgba(255, 214, 130, 0.16);
 }
 
@@ -82,18 +83,18 @@ page,
   --t-grad-4: #FFB3CF;
   --t-grad-5: #EE7BA6;
 
-  --t-glow-a: rgba(255, 155, 192, 0.18);
-  --t-glow-b: rgba(255, 155, 192, 0.30);
+  --t-glow-a: rgba(255, 155, 192, 0.10);
+  --t-glow-b: rgba(255, 155, 192, 0.16);
   --t-btn-glow: rgba(255, 122, 172, 0.62);
 
   /* 液态玻璃 Dock：粉色主题下反光偏玫瑰 */
-  --t-glass-top: rgba(255, 255, 255, 0.44);
-  --t-glass-mid: rgba(255, 255, 255, 0.14);
-  --t-glass-bot: rgba(255, 240, 246, 0.28);
-  --t-glass-edge: rgba(255, 255, 255, 0.66);
-  --t-glass-inner: rgba(255, 255, 255, 0.40);
-  --t-glass-warm: rgba(255, 152, 190, 0.34);
-  --t-glass-shadow-1: rgba(112, 52, 78, 0.28);
-  --t-glass-shadow-2: rgba(112, 52, 78, 0.10);
+  --t-glass-top: rgba(255, 255, 255, 0.32);
+  --t-glass-mid: rgba(255, 255, 255, 0.12);
+  --t-glass-bot: rgba(255, 243, 248, 0.24);
+  --t-glass-edge: rgba(255, 255, 255, 0.55);
+  --t-glass-warm: rgba(255, 168, 200, 0.18);
+  --t-glass-shade: rgba(128, 66, 92, 0.10);
+  --t-glass-shadow-1: rgba(112, 52, 78, 0.24);
+  --t-glass-shadow-2: rgba(112, 52, 78, 0.09);
   --t-glass-tint: rgba(255, 168, 200, 0.18);
 }

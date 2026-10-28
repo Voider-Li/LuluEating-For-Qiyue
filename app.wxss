@@ -126,7 +126,8 @@ page {
 
 /* 自定义 tabBar 悬浮栏：给页面底部预留空间 */
 .tab-page {
-  padding-bottom: 240rpx;
+  /* Dock 高 120rpx + 距底 24rpx + 安全区，再留一点呼吸：这里统一预留，页面不再各写一份 */
+  padding-bottom: 272rpx;
   position: relative;
 }
 
