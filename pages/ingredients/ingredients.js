@@ -8,7 +8,9 @@ Page({
     quantity: '',
     note: '',
     adding: false,
-    loading: true
+    loading: true,
+    // 常吃食材快选：点一下填进输入框，省得每次手打
+    quickList: ['鸡蛋', '牛奶', '番茄', '青菜', '米饭', '鸡胸肉']
   },
 
   onShow() {
@@ -41,7 +43,12 @@ Page({
     this.setData({ note: e.detail.value });
   },
 
+  onQuickTap(e) {
+    this.setData({ name: e.currentTarget.dataset.name || '' });
+  },
+
   async onAdd() {
+    if (this.data.adding) return;
     const name = (this.data.name || '').trim();
     if (!name) {
       wx.showToast({ title: '请输入食材名称', icon: 'none' });

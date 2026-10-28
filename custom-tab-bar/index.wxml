@@ -1,5 +1,6 @@
 <view class="tab-bar theme-{{theme}}">
   <view class="tab-group">
+    <view class="tab-indicator tab-indicator-{{selected}}"></view>
     <view
       wx:for="{{list}}"
       wx:key="pagePath"

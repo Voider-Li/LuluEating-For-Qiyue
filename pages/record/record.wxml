@@ -1,18 +1,22 @@
-<view class="page theme-{{theme}} tab-page">
+<view class="page theme-{{theme}} tab-page record-page">
   <custom-nav-bar />
 
-  <view class="record-hero">
-    <view class="record-hero-copy">
-      <view class="eyebrow">TODAY'S TABLE ? 记录此刻</view>
-      <view class="record-hero-title">把这一餐，留给以后的自己</view>
-      <view class="record-hero-sub">拍照识别食物，也可以手动补充。认真吃饭这件事，值得被记下来。</view>
+  <!-- 页头 -->
+  <view class="rec-head">
+    <view class="rec-head-copy">
+      <view class="eyebrow">TODAY'S TABLE · 记录此刻</view>
+      <view class="rec-head-title">把这一餐，留给以后的自己</view>
+      <view class="rec-head-sub">拍一张照片就够了，剩下的噜噜来补。</view>
     </view>
-    <view class="record-hero-mark">🥣</view>
+    <view class="rec-head-mark">🥣</view>
   </view>
-  <!-- 餐次选择 -->
-  <view class="card">
-    <view class="card-title">这一餐是？</view>
-    <view class="card-subtitle">先选餐次，再开始记录</view>
+
+  <!-- 01 餐次 -->
+  <view class="block">
+    <view class="block-head">
+      <text class="block-no">01</text>
+      <text class="block-title">这一餐是</text>
+    </view>
     <view class="meal-row">
       <view
         wx:for="{{mealOptions}}"
@@ -20,78 +24,96 @@
         class="meal-pill {{mealType === item.key ? 'meal-pill-active' : ''}}"
         data-key="{{item.key}}"
         bindtap="onMealTap"
-      >{{item.label}}</view>
+      >
+        <text class="meal-emoji">{{item.emoji}}</text>
+        <text class="meal-label">{{item.label}}</text>
+      </view>
     </view>
+    <view class="meal-hint">{{mealHint}}</view>
   </view>
 
-  <!-- 图片选择 -->
-  <view class="card">
-    <view class="card-title">拍一张照片</view>
-    <view class="card-subtitle">让噜噜帮你认出这顿饭里有什么</view>
-    <view class="image-picker" bindtap="onChooseImage">
-      <image wx:if="{{imagePath}}" src="{{imagePath}}" mode="aspectFill" class="preview" />
-      <view wx:else class="picker-placeholder">
-        <view class="picker-emoji">📷</view>
-        <view class="picker-text">拍照 / 从相册选择</view>
-        <view class="picker-tip">支持先拍照，之后再修改识别结果</view>
+  <!-- 02 拍照 -->
+  <view class="block">
+    <view class="block-head">
+      <text class="block-no">02</text>
+      <text class="block-title">拍一张照片</text>
+      <text class="block-meta" wx:if="{{imagePath}}">已选好</text>
+    </view>
+    <view class="shot-card {{imagePath ? 'shot-card-filled' : ''}}" bindtap="onChooseImage">
+      <image wx:if="{{imagePath}}" class="shot-img" src="{{imagePath}}" mode="aspectFill" />
+      <view wx:else class="shot-empty">
+        <view class="shot-glyph">
+          <view class="shot-glyph-ring"></view>
+          <text class="shot-glyph-icon">📷</text>
+        </view>
+        <view class="shot-main">拍照 / 从相册选择</view>
+        <view class="shot-sub">识别结果可以再改，先拍下来就好</view>
       </view>
+
+      <view class="shot-retake" wx:if="{{imagePath}}">换一张</view>
+
       <view class="scan-wrap" wx:if="{{analyzing && imagePath}}">
         <view class="scan-shade"></view>
         <view class="scan-line"></view>
         <view class="scan-badge">AI 识别中…</view>
       </view>
     </view>
-  </view>
 
-  <!-- 识别按钮 -->
-  <button
-    class="btn btn-primary btn-block analyze-button"
-    bindtap="onAnalyze"
-    loading="{{analyzing}}"
-    disabled="{{analyzing || !imagePath}}"
-  >{{analyzing ? stepText : 'AI 识别这顿饭'}}</button>
+    <button
+      class="btn btn-primary btn-block analyze-button"
+      bindtap="onAnalyze"
+      loading="{{analyzing}}"
+      disabled="{{analyzing || !imagePath}}"
+    >{{analyzing ? stepText : 'AI 识别这顿饭'}}</button>
 
-  <!-- 识别进度：分步状态 + 进度条 -->
-  <view class="analyze-panel" wx:if="{{analyzing}}">
-    <view class="step-row" wx:for="{{steps}}" wx:key="*this">
-      <view class="step-dot {{step > index ? 'step-done' : (step === index ? 'step-active' : '')}}">{{step > index ? '✓' : ''}}</view>
-      <text class="step-name {{step === index ? 'step-name-active' : ''}}">{{item}}</text>
-      <text class="step-percent" wx:if="{{step === index}}">{{progress}}%</text>
-    </view>
-    <view class="bar">
-      <view class="bar-fill" style="width: {{progress}}%"></view>
-    </view>
-  </view>
-
-  <!-- 识别结果 -->
-  <block wx:if="{{result}}">
-    <view class="card result-card">
-      <view class="result-heading">
-        <view>
-          <view class="card-title">识别结果</view>
-          <view class="card-subtitle">可以点 × 删除，也可以手动补充</view>
+    <!-- 识别进度 -->
+    <view class="analyze-panel" wx:if="{{analyzing}}">
+      <view class="step-track">
+        <view wx:for="{{steps}}" wx:key="*this" class="step-node">
+          <view class="step-dot {{step > index ? 'step-done' : (step === index ? 'step-active' : '')}}">{{step > index ? '✓' : index + 1}}</view>
+          <text class="step-name {{step === index ? 'step-name-active' : ''}}">{{item}}</text>
         </view>
-        <view class="result-badge">已识别</view>
       </view>
+      <view class="bar">
+        <view class="bar-fill" style="width: {{progress}}%"></view>
+      </view>
+      <view class="analyze-status">
+        <text>{{stepText}}</text>
+        <text class="step-percent">{{progress}}%</text>
+      </view>
+    </view>
+  </view>
 
+  <!-- 03 确认 -->
+  <view class="block" wx:if="{{result}}">
+    <view class="block-head">
+      <text class="block-no">03</text>
+      <text class="block-title">确认这顿饭</text>
+      <text class="block-meta">识别出 {{foods.length}} 种</text>
+    </view>
+
+    <view class="card result-card">
       <view class="foods-editor">
         <view class="food-chip" wx:for="{{foods}}" wx:key="_key">
           <text class="chip-name">{{item.name}}</text>
           <text class="chip-kcal" wx:if="{{item.calories}}">{{item.calories}}kcal · 蛋白{{item.protein}}g</text>
-          <text class="chip-remove" data-index="{{index}}" bindtap="onRemoveFood">×</text>
-        </view>
-        <view class="add-food-row">
-          <input
-            class="input add-food-input"
-            placeholder="添加食物"
-            value="{{newFoodName}}"
-            bindinput="onFoodInput"
-            confirm-type="done"
-            bindconfirm="onAddFood"
-          />
-          <view class="add-food-btn" bindtap="onAddFood">添加</view>
+          <text class="chip-remove" data-index="{{index}}" catchtap="onRemoveFood">×</text>
         </view>
       </view>
+
+      <view class="add-food-row">
+        <input
+          class="input add-food-input"
+          placeholder="漏了什么？手动加一项"
+          value="{{newFoodName}}"
+          bindinput="onFoodInput"
+          confirm-type="done"
+          bindconfirm="onAddFood"
+        />
+        <view class="add-food-btn" bindtap="onAddFood">添加</view>
+      </view>
+
+      <view class="result-divider"></view>
 
       <balance-card
         balance="{{balance}}"
@@ -101,18 +123,18 @@
         nutrition="{{nutrition}}"
         analyze-time="{{analyzeTime}}"
       />
+
       <view class="note-card">
         <view class="note-card-title"><text>嘎哒碎碎念</text><text class="note-card-hint">可写可不写</text></view>
-        <textarea class="note-input" maxlength="200" placeholder="记录一下今天的小事、心情，或这顿饭为什么想吃" value="{{note}}" bindinput="onNoteInput"></textarea>
+        <textarea class="note-input" maxlength="200" placeholder="今天的小事、心情，或这顿饭为什么想吃" value="{{note}}" bindinput="onNoteInput"></textarea>
       </view>
     </view>
 
     <button
-      class="btn btn-primary btn-block"
+      class="btn btn-primary btn-block save-btn"
       bindtap="onSave"
       loading="{{saving}}"
       disabled="{{saving}}"
     >保存这顿记录</button>
-  </block>
+  </view>
 </view>
-

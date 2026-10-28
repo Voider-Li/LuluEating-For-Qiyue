@@ -2,69 +2,142 @@
    所以这里也 import 一份主题变量（唯一来源，跟 app.wxss 一致） */
 @import "../styles/theme.wxss";
 
+/* ============================================================
+   毛玻璃 Dock
+   结构：外框（玻璃体） + 指示器（滑动药丸） + 3 个 tab + 右侧嘎哒按钮
+   玻璃感靠四层叠出来，任何一层掉了都还能看：
+     1. 半透明渐变底色（不支持 backdrop-filter 时的兜底）
+     2. backdrop-filter: blur + saturate（真正把底下内容糊开）
+     3. 顶部高光 + 底部内阴影（玻璃厚度）
+     4. 外投影（浮起来）
+   ============================================================ */
+
 .tab-bar {
   position: fixed;
   left: 24rpx;
   right: 24rpx;
-  bottom: calc(constant(safe-area-inset-bottom) + 18rpx);
-  bottom: calc(env(safe-area-inset-bottom) + 18rpx);
+  bottom: calc(constant(safe-area-inset-bottom) + 20rpx);
+  bottom: calc(env(safe-area-inset-bottom) + 20rpx);
   z-index: 999;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 12rpx 24rpx 12rpx 12rpx;
-  height: 132rpx;
+  height: 128rpx;
+  padding: 10rpx;
   box-sizing: border-box;
-  border-radius: 48rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.65);
-  background:
-    radial-gradient(rgba(255, 255, 255, 0.9) 1rpx, transparent 1.5rpx),
-    linear-gradient(165deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 249, 238, 0.58) 55%, rgba(255, 246, 222, 0.5) 100%);
-  background-size: 8rpx 8rpx, 100% 100%;
+  border-radius: 44rpx;
+  border: 1rpx solid var(--t-glass-edge);
+  background: linear-gradient(
+    168deg,
+    var(--t-glass-top) 0%,
+    var(--t-glass-mid) 48%,
+    var(--t-glass-bot) 100%
+  );
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(180%);
   box-shadow:
-    inset 0 1rpx 0 rgba(255, 255, 255, 0.95),
-    inset 0 -10rpx 28rpx rgba(255, 182, 39, 0.07),
-    0 20rpx 48rpx rgba(96, 86, 62, 0.22),
-    0 4rpx 12rpx rgba(96, 86, 62, 0.08);
-  -webkit-backdrop-filter: blur(48rpx);
-  backdrop-filter: blur(48rpx);
-  -webkit-backdrop-filter: blur(48rpx) saturate(1.5);
-  backdrop-filter: blur(48rpx) saturate(1.5);
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.96),
+    inset 0 -12rpx 24rpx rgba(255, 255, 255, 0.30),
+    0 22rpx 44rpx -14rpx var(--t-glass-shadow-1),
+    0 6rpx 16rpx var(--t-glass-shadow-2);
 }
 
+/* 顶部一道斜向高光：玻璃的"反光面" */
+.tab-bar::before {
+  content: '';
+  position: absolute;
+  left: 2rpx;
+  right: 2rpx;
+  top: 0;
+  height: 52rpx;
+  border-radius: 42rpx 42rpx 60% 60%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+/* 底部一层主题色晕染：暖色偏琥珀，粉色偏玫瑰 */
+.tab-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60rpx;
+  border-radius: 0 0 44rpx 44rpx;
+  background: linear-gradient(0deg, var(--t-glass-tint), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+/* ---------- 左侧三个 tab ---------- */
 .tab-group {
-  width: 470rpx;
+  position: relative;
+  flex: 1;
   height: 100%;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   padding: 8rpx;
   border-radius: 36rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.6);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.22));
+  border: 1rpx solid var(--t-glass-inner);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.08));
+}
+
+/* 滑动药丸指示器：宽度 = 单个 tab，位移 = n 个自身宽度 */
+.tab-indicator {
+  position: absolute;
+  top: 8rpx;
+  bottom: 8rpx;
+  left: 8rpx;
+  width: calc((100% - 16rpx) / 3);
+  border-radius: 28rpx;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.66));
+  box-shadow:
+    inset 0 1rpx 0 rgba(255, 255, 255, 1),
+    0 6rpx 14rpx -4rpx var(--t-glass-shadow-2);
+  transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.tab-indicator-0 {
+  transform: translateX(0);
+}
+
+.tab-indicator-1 {
+  transform: translateX(100%);
+}
+
+.tab-indicator-2 {
+  transform: translateX(200%);
 }
 
 .tab-item {
+  position: relative;
+  z-index: 1;
   flex: 1;
   height: 100%;
-  border-radius: 30rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  border-radius: 28rpx;
+  transition: transform 0.18s ease;
+}
+
+.tab-item:active {
+  transform: scale(0.95);
 }
 
 .tab-icon {
-  width: 52rpx;
-  height: 52rpx;
+  width: 46rpx;
+  height: 46rpx;
+  transition: transform 0.24s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .tab-text {
-  margin-top: 6rpx;
+  margin-top: 4rpx;
   font-size: 20rpx;
   line-height: 1;
+  letter-spacing: 0.5rpx;
   color: var(--t-text-sub);
+  transition: color 0.2s ease;
 }
 
 .tab-item-active .tab-text {
@@ -72,18 +145,22 @@
   font-weight: 600;
 }
 
-.tab-item-active {
-  background: linear-gradient(180deg, var(--t-glow-b), var(--t-glow-a));
-  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.7);
+.tab-item-active .tab-icon {
+  transform: translateY(-2rpx) scale(1.08);
 }
 
+/* ---------- 右侧：嘎哒（AI 聊天） ---------- */
 .tab-side {
-  width: 148rpx;
+  flex-shrink: 0;
+  margin-left: 10rpx;
+  padding-right: 2rpx;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .chat-btn {
+  position: relative;
   width: 104rpx;
   height: 104rpx;
   border-radius: 50%;
@@ -93,26 +170,39 @@
   justify-content: center;
   background: linear-gradient(160deg, var(--t-grad-4) 0%, var(--t-primary) 55%, var(--t-grad-5) 100%);
   box-shadow:
-    0 0 22rpx var(--t-btn-glow),
-    0 10rpx 24rpx var(--t-btn-glow),
-    inset 0 2rpx 0 rgba(255, 255, 255, 0.65);
-  animation: chatGlow 2.4s ease-in-out infinite;
+    0 0 20rpx var(--t-btn-glow),
+    0 10rpx 22rpx var(--t-glass-shadow-2),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.7);
+  animation: chatGlow 2.6s ease-in-out infinite;
   transition: transform 0.15s ease;
+}
+
+/* 玻璃质感的高光弧：让圆形按钮不那么"平" */
+.chat-btn::after {
+  content: '';
+  position: absolute;
+  left: 12rpx;
+  right: 12rpx;
+  top: 6rpx;
+  height: 38rpx;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  pointer-events: none;
 }
 
 /* 呼吸式的光晕：暖色主题是暖光，粉色主题是粉光 */
 @keyframes chatGlow {
   0%, 100% {
     box-shadow:
-      0 0 16rpx var(--t-btn-glow),
-      0 8rpx 20rpx rgba(0, 0, 0, 0.16),
+      0 0 14rpx var(--t-btn-glow),
+      0 8rpx 18rpx var(--t-glass-shadow-2),
       inset 0 2rpx 0 rgba(255, 255, 255, 0.65);
   }
   50% {
     box-shadow:
-      0 0 38rpx var(--t-btn-glow),
-      0 12rpx 28rpx rgba(0, 0, 0, 0.2),
-      inset 0 2rpx 0 rgba(255, 255, 255, 0.78);
+      0 0 34rpx var(--t-btn-glow),
+      0 12rpx 26rpx var(--t-glass-shadow-1),
+      inset 0 2rpx 0 rgba(255, 255, 255, 0.8);
   }
 }
 
@@ -121,11 +211,15 @@
 }
 
 .chat-icon {
-  width: 42rpx;
-  height: 42rpx;
+  position: relative;
+  z-index: 1;
+  width: 40rpx;
+  height: 40rpx;
 }
 
 .chat-label {
+  position: relative;
+  z-index: 1;
   margin-top: 2rpx;
   font-size: 18rpx;
   line-height: 1.1;

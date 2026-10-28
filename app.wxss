@@ -130,15 +130,18 @@ page {
   position: relative;
 }
 
-/* 底部环境光：让悬浮毛玻璃有内容可糊，增强真实感 */
+/* 底部环境光：让悬浮毛玻璃有内容可糊，增强真实感
+   两层叠：中间一团暖光（被 Dock 糊开）+ 底部一条渐隐 */
 .tab-page::after {
   content: '';
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 360rpx;
+  height: 420rpx;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 246, 222, 0) 0%, var(--t-glow-a) 70%, var(--t-glow-b) 100%);
+  background:
+    radial-gradient(120% 100% at 50% 118%, var(--t-glow-b) 0%, rgba(255, 246, 222, 0) 62%),
+    linear-gradient(180deg, rgba(255, 246, 222, 0) 0%, var(--t-glow-a) 74%, var(--t-glow-b) 100%);
 }

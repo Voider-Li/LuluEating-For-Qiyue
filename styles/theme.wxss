@@ -42,6 +42,16 @@ page,
   --t-glow-a: rgba(255, 182, 39, 0.16);
   --t-glow-b: rgba(255, 182, 39, 0.26);
   --t-btn-glow: rgba(245, 163, 18, 0.5);
+
+  /* 毛玻璃 Dock：玻璃体本身的四层色 + 投影 */
+  --t-glass-top: rgba(255, 255, 255, 0.82);
+  --t-glass-mid: rgba(255, 252, 244, 0.60);
+  --t-glass-bot: rgba(255, 245, 226, 0.54);
+  --t-glass-edge: rgba(255, 255, 255, 0.74);
+  --t-glass-inner: rgba(255, 255, 255, 0.58);
+  --t-glass-shadow-1: rgba(94, 72, 26, 0.30);
+  --t-glass-shadow-2: rgba(94, 72, 26, 0.10);
+  --t-glass-tint: rgba(255, 214, 130, 0.16);
 }
 
 /* ---------- 粉色 ---------- */
@@ -74,4 +84,14 @@ page,
   --t-glow-a: rgba(255, 155, 192, 0.18);
   --t-glow-b: rgba(255, 155, 192, 0.30);
   --t-btn-glow: rgba(255, 122, 172, 0.62);
+
+  /* 毛玻璃 Dock：粉色主题下玻璃偏玫瑰白 */
+  --t-glass-top: rgba(255, 255, 255, 0.84);
+  --t-glass-mid: rgba(255, 248, 251, 0.60);
+  --t-glass-bot: rgba(255, 238, 245, 0.56);
+  --t-glass-edge: rgba(255, 255, 255, 0.78);
+  --t-glass-inner: rgba(255, 255, 255, 0.60);
+  --t-glass-shadow-1: rgba(112, 52, 78, 0.28);
+  --t-glass-shadow-2: rgba(112, 52, 78, 0.10);
+  --t-glass-tint: rgba(255, 168, 200, 0.18);
 }

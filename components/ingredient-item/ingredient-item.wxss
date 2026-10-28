@@ -1,22 +1,21 @@
+/* 清单行：外层 .list-row 负责分隔线，这里只做行内排版（不再自带卡片阴影） */
 .ingredient-item {
   display: flex;
   align-items: center;
-  background: var(--t-card);
-  border-radius: 20rpx;
-  padding: 24rpx 28rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 10rpx rgba(96, 86, 62, 0.05);
+  padding: 22rpx 0;
 }
 
 .ingredient-icon {
+  flex-shrink: 0;
+  width: 68rpx;
+  height: 68rpx;
+  margin-right: 18rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64rpx;
-  height: 64rpx;
-  margin-right: 18rpx;
-  border-radius: 20rpx;
-  background: #F0F6EA;
+  border-radius: 22rpx;
+  background: linear-gradient(160deg, #F4F9EF 0%, #E6F1DC 100%);
+  box-shadow: inset 0 1rpx 0 rgba(255, 255, 255, 0.9);
   font-size: 34rpx;
 }
 
@@ -26,22 +25,31 @@
 }
 
 .name {
-  font-size: 30rpx;
-  font-weight: 500;
+  color: var(--t-text);
+  font-size: 29rpx;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .meta {
-  font-size: 24rpx;
-  color: var(--t-text-sub);
   margin-top: 4rpx;
+  color: var(--t-text-sub);
+  font-size: 22rpx;
+  line-height: 1.4;
 }
 
 .delete {
-  margin-left: 14rpx;
-  padding: 9rpx 18rpx;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+  padding: 9rpx 20rpx;
   border: 1rpx solid #F1D8D1;
   border-radius: 999rpx;
+  background: #FFF6F2;
   color: #B86B58;
-  background: #FFF5F1;
-  font-size: 22rpx;
+  font-size: 21rpx;
+  line-height: 1.2;
+}
+
+.delete:active {
+  background: #FBEAE4;
 }

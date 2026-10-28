@@ -1,55 +1,73 @@
-<view class="page theme-{{theme}} tab-page">
+<view class="page theme-{{theme}} tab-page ingredients-page">
   <custom-nav-bar />
 
-  <view class="ingredients-hero">
-    <view class="ingredients-hero-copy">
-      <view class="eyebrow">PANTRY NOTES ? 家里的小库存</view>
-      <view class="ingredients-hero-title">记下手边的食材，下一餐就有方向</view>
-      <view class="ingredients-hero-sub">不用一次整理完，想到什么就添什么。</view>
+  <!-- 页头 -->
+  <view class="ing-head">
+    <view class="ing-head-copy">
+      <view class="eyebrow">PANTRY NOTES · 家里的小库存</view>
+      <view class="ing-head-title">记下手边的食材，下一餐就有方向</view>
+      <view class="ing-head-sub">不用一次整理完，想到什么就添什么。</view>
     </view>
-    <view class="ingredients-count">
-      <text class="ingredients-count-number">{{list.length}}</text>
-      <text class="ingredients-count-label">种食材</text>
+    <view class="ing-count">
+      <text class="ing-count-num">{{list.length}}</text>
+      <text class="ing-count-label">种</text>
     </view>
   </view>
+
   <!-- 添加食材 -->
-  <view class="card">
-    <view class="card-title">添加食材</view>
-    <view class="card-subtitle">把家里的存货记在这里，推荐会更贴近你们</view>
-    <view class="field">
-      <view class="field-label">食材名称</view>
-      <input class="input" placeholder="食材名称，如：鸡蛋" value="{{name}}" bindinput="onNameInput" />
+  <view class="add-card">
+    <view class="add-row">
+      <input
+        class="add-input"
+        placeholder="食材名称，如：鸡蛋"
+        value="{{name}}"
+        bindinput="onNameInput"
+        confirm-type="done"
+        bindconfirm="onAdd"
+      />
+      <view class="add-submit {{name ? 'add-submit-on' : ''}}" bindtap="onAdd">{{adding ? '添加中' : '添加'}}</view>
     </view>
-    <view class="field-row">
-      <view class="field field-half">
-        <view class="field-label">大概数量</view>
-        <input class="input" placeholder="数量（可选）" value="{{quantity}}" bindinput="onQuantityInput" />
-      </view>
-      <view class="field field-half">
-        <view class="field-label">小备注</view>
-        <input class="input" placeholder="备注（可选）" value="{{note}}" bindinput="onNoteInput" />
+
+    <view class="add-extra">
+      <input class="add-mini" placeholder="数量（可选）" value="{{quantity}}" bindinput="onQuantityInput" />
+      <input class="add-mini" placeholder="备注（可选）" value="{{note}}" bindinput="onNoteInput" />
+    </view>
+
+    <view class="quick-row">
+      <text class="quick-label">常吃</text>
+      <view class="quick-chips">
+        <view
+          class="quick-chip"
+          wx:for="{{quickList}}"
+          wx:key="*this"
+          data-name="{{item}}"
+          bindtap="onQuickTap"
+        >{{item}}</view>
       </view>
     </view>
-    <button class="btn btn-primary btn-block" bindtap="onAdd" loading="{{adding}}" disabled="{{adding}}">添加</button>
   </view>
 
   <!-- 食材列表 -->
-  <view class="card inventory-card">
-    <view class="inventory-heading">
-      <view>
-        <view class="card-title">家里有什么</view>
-        <view class="card-subtitle">随手记下，下一餐更好安排</view>
-      </view>
-      <view class="inventory-total">{{list.length}}</view>
+  <view class="list-block">
+    <view class="list-head">
+      <text class="list-title">家里有什么</text>
+      <text class="list-meta">{{list.length ? '共 ' + list.length + ' 项' : '还空着'}}</text>
     </view>
-    <view class="ingredient-loading" wx:if="{{loading}}">正在整理食材清单…</view>
-    <block wx:elif="{{list.length}}">
-      <ingredient-item wx:for="{{list}}" wx:key="id" ingredient="{{item}}" bind:delete="onDelete" />
-    </block>
-    <view class="ingredient-empty" wx:else>
-      <view class="ingredient-empty-icon">🧺</view>
-      <view class="ingredient-empty-title">冰箱还在等第一条记录</view>
-      <view class="ingredient-empty-copy">从上面添一项，慢慢把你们的厨房收集起来。</view>
+
+    <view class="list-card">
+      <view class="ing-loading" wx:if="{{loading}}">正在整理食材清单…</view>
+
+      <block wx:elif="{{list.length}}">
+        <view class="list-row" wx:for="{{list}}" wx:key="id">
+          <ingredient-item ingredient="{{item}}" bind:delete="onDelete" />
+        </view>
+      </block>
+
+      <view class="ing-empty" wx:else>
+        <view class="ing-empty-icon">🧺</view>
+        <view class="ing-empty-title">冰箱还在等第一条记录</view>
+        <view class="ing-empty-copy">从上面添一项，慢慢把你们的厨房收集起来。</view>
+      </view>
     </view>
   </view>
 </view>

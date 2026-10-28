@@ -2,11 +2,16 @@ const foodService = require('../../services/food');
 const nutritionUtil = require('../../utils/nutrition');
 
 const MEAL_OPTIONS = [
-  { key: 'breakfast', label: '早餐' },
-  { key: 'lunch', label: '午餐' },
-  { key: 'dinner', label: '晚餐' },
-  { key: 'snack', label: '加餐' }
+  { key: 'breakfast', label: '早餐', emoji: '🌅', hint: '早餐记下来，一天的开头就有了着落。' },
+  { key: 'lunch', label: '午餐', emoji: '☀️', hint: '午餐拍一张，看看这顿吃得均不均衡。' },
+  { key: 'dinner', label: '晚餐', emoji: '🌙', hint: '晚餐清淡一点，睡前会更舒服。' },
+  { key: 'snack', label: '加餐', emoji: '🍪', hint: '加餐也算数，别漏掉手边的小零食。' }
 ];
+
+function hintOf(key) {
+  const hit = MEAL_OPTIONS.filter(function (m) { return m.key === key; })[0];
+  return (hit && hit.hint) || '';
+}
 
 function withKeys(foods) {
   return (foods || []).map(function (f, i) {
@@ -19,6 +24,7 @@ Page({
     theme: 'warm',
     mealOptions: MEAL_OPTIONS,
     mealType: 'lunch',
+    mealHint: hintOf('lunch'),
     imagePath: '',
     analyzing: false,
     stepText: '',
@@ -47,7 +53,8 @@ Page({
   },
 
   onMealTap(e) {
-    this.setData({ mealType: e.currentTarget.dataset.key });
+    const key = e.currentTarget.dataset.key;
+    this.setData({ mealType: key, mealHint: hintOf(key) });
   },
 
   onChooseImage() {
